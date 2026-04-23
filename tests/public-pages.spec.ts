@@ -75,3 +75,11 @@ test("/resources/software-worker-scale-and-leverage shows resource page chrome",
   await expect(page.getByRole("heading", { name: "On this page" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Sources" })).toBeVisible();
 });
+
+test("/organize shows hub page structure", async ({ page }) => {
+  await page.goto("/organize");
+
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+  await expect(page.getByText("Start here", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Workplace mapping" })).toBeVisible();
+});

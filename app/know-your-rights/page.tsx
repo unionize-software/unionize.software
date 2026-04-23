@@ -1,86 +1,119 @@
-import Link from "next/link";
+import type { Route } from "next";
 
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { HubPage } from "@/components/site/HubPage";
+
+const startHereLinks = [
+  {
+    href: "/resources/protected-concerted-activity" as Route,
+    title: "Protected concerted activity",
+    description:
+      "The basic labor-rights page for workers who need to understand what kinds of collective workplace action may be protected.",
+  },
+  {
+    href: "/resources/retaliation-warning-signs" as Route,
+    title: "Retaliation warning signs",
+    description:
+      "Use this when management behavior shifts after workers start comparing notes or raising issues together.",
+  },
+  {
+    href: "/resources/supervisor-status-and-exclusion" as Route,
+    title: "Supervisor status and exclusion questions",
+    description:
+      "A page for the common question of who may be treated as excluded from NLRA coverage in practice.",
+  },
+  {
+    href: "/resources/contractor-vendor-misclassification" as Route,
+    title: "Contractor, vendor, and misclassification questions",
+    description:
+      "Use this when the employer relationship itself is muddy or split across staffing layers.",
+  },
+] as const;
+
+const commonIdeas = [
+  {
+    title: "Clarify the lane first",
+    description:
+      "Private-sector employee, contractor, public-sector worker, and possible supervisor are not tiny distinctions. They can change the whole strategic lane.",
+  },
+  {
+    title: "Rights talk should calm people down",
+    description:
+      "The point is not to hand workers fake certainty. It is to reduce rumor, identify obvious risk, and steer people away from reckless assumptions.",
+  },
+  {
+    title: "Legal scope is not the same as campaign strategy",
+    description:
+      "A move can be legally arguable and still strategically foolish. The rights pages should help people separate those two questions.",
+  },
+] as const;
+
+const relatedLinks = [
+  {
+    href: "/resources/pay-transparency-leveling-and-promotions" as Route,
+    title: "Pay transparency, leveling, and promotions",
+    description:
+      "Use this when the workplace problem is not abstract rights confusion but an actual pay and advancement pattern.",
+  },
+  {
+    href: "/resources/on-call-burnout-and-after-hours-work" as Route,
+    title: "On-call, burnout, and after-hours work",
+    description:
+      "A common issue lane where workers need both rights basics and organizing judgment.",
+  },
+  {
+    href: "/resources/discrimination-exclusion-and-organizing-safely" as Route,
+    title: "Discrimination, exclusion, and organizing safely",
+    description:
+      "Use this when harm is unequally distributed and workers need to organize without flattening the problem.",
+  },
+  {
+    href: "/start" as Route,
+    title: "Optional local-only pathfinder",
+    description:
+      "Use this when someone needs a narrower route into the wiki but does not want to hand their answers to a backend.",
+    cta: "Open pathfinder",
+    meta: "Local only",
+  },
+] as const;
 
 export default function KnowYourRightsPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
-      <SectionHeader
-        eyebrow="Know your rights"
-        title="Start with the ground rules, then get more specific."
-        description="This section is educational, not legal advice. It exists to help U.S. private-sector software and game workers understand the basic terrain, spot common risk questions, and avoid mistakes that expose people too early."
-      />
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>What this section covers</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-muted-foreground">
-            <p>
-              Protected concerted activity, common exclusions, retaliation warning signs, and why
-              private-sector status matters.
-            </p>
-            <p>
-              Use it to orient yourself before you take any steps that could expose coworkers or
-              create avoidable risk.
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Recommended next move</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-muted-foreground">
-            <p>
-              If you want a narrower route in, use the local-only pathfinder. If you already know
-              the problem, go straight to the guide instead.
-            </p>
-            <Button asChild>
-              <Link href="/start">Open Start Here</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Common exclusion questions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-muted-foreground">
-            <Link className="block underline-offset-4 hover:underline" href="/resources/protected-concerted-activity">
-              Protected concerted activity
-            </Link>
-            <Link className="block underline-offset-4 hover:underline" href="/resources/contractor-vendor-misclassification">
-              Contractor, vendor, and misclassification questions
-            </Link>
-            <Link className="block underline-offset-4 hover:underline" href="/resources/supervisor-status-and-exclusion">
-              Supervisor status and exclusion questions
-            </Link>
-            <Link className="block underline-offset-4 hover:underline" href="/resources/retaliation-warning-signs">
-              Retaliation warning signs
-            </Link>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Issue lanes people need most often</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-muted-foreground">
-            <Link className="block underline-offset-4 hover:underline" href="/resources/pay-transparency-leveling-and-promotions">
-              Pay transparency, leveling, and promotions
-            </Link>
-            <Link className="block underline-offset-4 hover:underline" href="/resources/on-call-burnout-and-after-hours-work">
-              On-call, burnout, and after-hours work
-            </Link>
-            <Link className="block underline-offset-4 hover:underline" href="/resources/discrimination-exclusion-and-organizing-safely">
-              Discrimination, exclusion, and organizing safely
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <HubPage
+      eyebrow="Know your rights"
+      title="Start with the ground rules, then get more specific."
+      description="This section is educational, not legal advice. It exists to help U.S. private-sector software and game workers understand the basic terrain, spot common risk questions, and avoid mistakes that expose people too early."
+      overview={{
+        title: "Use this section to get the labor basics straight before you gamble on rumor.",
+        body: [
+          "This is where workers should start when they need the ground rules on concerted activity, exclusions, retaliation, and why private-sector status matters.",
+          "A rights page should make people calmer and more precise. If it makes them feel invincible, it is doing the opposite of its job.",
+        ],
+      }}
+      startHere={{
+        title: "Start with the pages that answer the most common status and retaliation questions.",
+        description:
+          "If you already know the issue, go straight there. If not, these pages cover the rights questions that distort strategy most often.",
+        links: startHereLinks,
+        columns: 2,
+      }}
+      ideaSection={{
+        eyebrow: "Ground rules",
+        title: "What the rights section should help workers do.",
+        items: commonIdeas,
+      }}
+      relatedSection={{
+        eyebrow: "Common next lanes",
+        title: "Move from rights basics into the actual workplace problem.",
+        description:
+          "Once the basic labor terrain is clearer, most workers need an issue guide, not another abstract rights explainer.",
+        items: relatedLinks,
+      }}
+      note={{
+        badge: "Scope",
+        title: "A rights page is not a guarantee.",
+        description:
+          "The site can help workers understand common rules and common dangers. It cannot tell them that every tactic is protected or wise.",
+      }}
+    />
   );
 }
