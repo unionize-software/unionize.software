@@ -1,108 +1,32 @@
+import {
+  guideCollectionDefinitions,
+  type GuideCollectionId,
+} from "@/lib/content/contentModel";
 import type { GuideListDocument } from "@/lib/content/getGuides";
 
 type WikiSectionDefinition = {
-  id: string;
+  id: GuideCollectionId;
   title: string;
   description: string;
-  slugs: string[];
 };
 
 export type WikiSection = WikiSectionDefinition & {
   guides: GuideListDocument[];
 };
 
-const wikiSectionDefinitions: WikiSectionDefinition[] = [
-  {
-    id: "issue-guides",
-    title: "Issue Guides",
-    description: "Start with the problem workers are actually facing right now.",
-    slugs: [
-      "ai-surveillance-worker-data",
-      "keystroke-tracking-ai-training",
-      "layoffs-severance",
-      "pay-transparency-leveling-and-promotions",
-      "on-call-burnout-and-after-hours-work",
-      "discrimination-exclusion-and-organizing-safely",
-      "contractor-vendor-misclassification",
-      "game-worker-crunch",
-    ],
-  },
-  {
-    id: "work-modes",
-    title: "Work Modes",
-    description: "In-person, hybrid, and distributed workplaces need different organizing mechanics.",
-    slugs: [
-      "remote-hybrid-and-distributed-organizing",
-      "workplace-mapping",
-      "organizing-conversations",
-    ],
-  },
-  {
-    id: "worker-status",
-    title: "Worker Status & Exclusions",
-    description: "Use these pages when titles, classification, or legal lane are not straightforward.",
-    slugs: [
-      "protected-concerted-activity",
-      "contractor-vendor-misclassification",
-      "supervisor-status-and-exclusion",
-      "retaliation-warning-signs",
-    ],
-  },
-  {
-    id: "campaign-stages",
-    title: "Campaign Stages",
-    description: "Move from orientation to structure instead of jumping straight to a public move.",
-    slugs: [
-      "workplace-mapping",
-      "first-organizing-conversation-checklist",
-      "recognition-majority-support-and-going-public",
-      "first-contract-basics",
-      "worker-coop-basics",
-    ],
-  },
-  {
-    id: "evidence-leverage",
-    title: "Evidence & Leverage",
-    description:
-      "Use these pages when you need facts, history, and a calmer answer to the claim that software workers cannot organize.",
-    slugs: [
-      "software-worker-scale-and-leverage",
-      "why-software-workers-have-been-slow-to-unionize",
-      "what-collective-bargaining-can-change-for-software-workers",
-    ],
-  },
-  {
-    id: "checklists-tools",
-    title: "Checklists & Tools",
-    description: "Short practical pages for the first moves workers usually need to make.",
-    slugs: [
-      "what-to-preserve-checklist",
-      "first-organizing-conversation-checklist",
-      "what-not-to-do-checklist",
-    ],
-  },
-  {
-    id: "reference",
-    title: "Reference",
-    description: "Use these pages to ground the basics before you make bigger strategic assumptions.",
-    slugs: [
-      "organizing-glossary",
-      "protected-concerted-activity",
-      "retaliation-warning-signs",
-      "supervisor-status-and-exclusion",
-    ],
-  },
-];
+const wikiSectionDefinitions: WikiSectionDefinition[] = Object.entries(guideCollectionDefinitions).map(
+  ([id, section]) => ({
+    id: id as GuideCollectionId,
+    title: section.title,
+    description: section.description,
+  }),
+);
 
 export function buildWikiSections(guides: GuideListDocument[]): WikiSection[] {
-  const guidesBySlug = new Map(guides.map((guide) => [guide.slug, guide]));
-
   return wikiSectionDefinitions
     .map((section) => ({
       ...section,
-      guides: section.slugs
-        .map((slug) => guidesBySlug.get(slug))
-        .filter((guide): guide is GuideListDocument => Boolean(guide)),
+      guides: guides.filter((guide) => guide.collections.includes(section.id)),
     }))
     .filter((section) => section.guides.length > 0);
 }
@@ -119,9 +43,19 @@ export function getRelatedGuidesForGuide(
   limit = 4,
 ) {
   const guidesBySlug = new Map(guides.map((guide) => [guide.slug, guide]));
-  const relatedSlugs = getWikiSectionsForGuide(guides, slug)
-    .flatMap((section) => section.guides.map((guide) => guide.slug))
-    .filter((relatedSlug, index, allSlugs) => relatedSlug !== slug && allSlugs.indexOf(relatedSlug) === index)
+  const guide = guidesBySlug.get(slug);
+
+  if (!guide) {
+    return [];
+  }
+
+  const explicitRelatedSlugs = guide.related_slugs.filter((relatedSlug) => relatedSlug !== slug);
+  const fallbackRelatedSlugs = getWikiSectionsForGuide(guides, slug)
+    .flatMap((section) => section.guides.map((sectionGuide) => sectionGuide.slug))
+    .filter((relatedSlug) => relatedSlug !== slug);
+
+  const relatedSlugs = [...explicitRelatedSlugs, ...fallbackRelatedSlugs]
+    .filter((relatedSlug, index, allSlugs) => allSlugs.indexOf(relatedSlug) === index)
     .slice(0, limit);
 
   return relatedSlugs

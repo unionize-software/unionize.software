@@ -136,8 +136,9 @@ export default async function ResourcesPage() {
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
               <p>
-                <span className="font-semibold text-foreground">Issue guides</span> explain the
-                problem and the organizing angle behind it.
+                <span className="font-semibold text-foreground">Playbooks</span> explain the
+                problem, the organizing angle behind it, and what kind of next move the page is
+                good for.
               </p>
               <p>
                 <span className="font-semibold text-foreground">Checklists</span> are for moments

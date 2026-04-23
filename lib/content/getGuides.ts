@@ -71,11 +71,17 @@ function toGuideListDocument(guide: GuideDocument): GuideListDocument {
     title: guide.title,
     slug: guide.slug,
     category: guide.category,
+    page_type: guide.page_type,
     jurisdiction: guide.jurisdiction,
     legal_scope: guide.legal_scope,
     last_reviewed: guide.last_reviewed,
     review_status: guide.review_status,
     risk_level: guide.risk_level,
+    source_status: guide.source_status,
+    when_to_use: guide.when_to_use,
+    not_for: guide.not_for,
+    collections: guide.collections,
+    related_slugs: guide.related_slugs,
     excerpt: guide.excerpt,
   };
 }

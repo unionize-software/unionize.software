@@ -2,6 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import {
+  guidePageTypeLabels,
+  guideSourceStatusLabels,
+} from "@/lib/content/contentModel";
 import { renderMdx } from "@/lib/content/mdx";
 import { getGuideBySlug, getGuides, getGuideSlugs } from "@/lib/content/getGuides";
 import { extractGuideHeadings, guideHasSourcesSection } from "@/lib/content/guideStructure";
@@ -19,22 +23,6 @@ function formatReviewDate(value: string) {
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(`${value}T00:00:00Z`));
-}
-
-function getGuidePageType(slug: string, category: string) {
-  if (slug.endsWith("-checklist") || category.toLowerCase().includes("checklist")) {
-    return "Checklist";
-  }
-
-  if (slug.includes("glossary") || category.toLowerCase().includes("reference")) {
-    return "Reference";
-  }
-
-  if (category.toLowerCase().includes("evidence")) {
-    return "Evidence page";
-  }
-
-  return "Guide";
 }
 
 export async function generateStaticParams() {
@@ -65,7 +53,8 @@ export default async function ResourceDetailPage({
   const headings = extractGuideHeadings(guide.body).filter((heading) => heading.id !== "sources");
   const hasSourcesSection = guideHasSourcesSection(guide.body);
   const primarySection = wikiSections[0];
-  const pageType = getGuidePageType(guide.slug, guide.category);
+  const pageType = guidePageTypeLabels[guide.page_type];
+  const sourceStatus = guideSourceStatusLabels[guide.source_status];
   const formattedReviewDate = formatReviewDate(guide.last_reviewed);
 
   return (
@@ -160,12 +149,24 @@ export default async function ResourceDetailPage({
                   <p>{guide.jurisdiction}</p>
                 </div>
                 <div>
+                  <p className="font-semibold text-foreground">When to use</p>
+                  <p>{guide.when_to_use}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Not for</p>
+                  <p>{guide.not_for}</p>
+                </div>
+                <div>
                   <p className="font-semibold text-foreground">Last reviewed</p>
                   <p>{formattedReviewDate}</p>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Review status</p>
                   <p>{guide.review_status}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Source footing</p>
+                  <p>{sourceStatus}</p>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Source list</p>

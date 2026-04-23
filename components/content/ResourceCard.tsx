@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { ArrowRight } from "lucide-react";
 
+import { guidePageTypeLabels } from "@/lib/content/contentModel";
 import type { GuideSearchResult } from "@/lib/content/search";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,10 +42,11 @@ export function ResourceCard({
 }: GuideSearchResult) {
   return (
     <Link href={`/resources/${guide.slug}`} prefetch className="block h-full">
-      <Card className="interactive-card flex h-full flex-col bg-card/85">
+        <Card className="interactive-card flex h-full flex-col bg-card/85">
         <CardHeader className="space-y-4">
           <div className="flex flex-wrap gap-2">
-            <Badge>
+            <Badge>{guidePageTypeLabels[guide.page_type]}</Badge>
+            <Badge variant="outline">
               <HighlightedText text={guide.category} searchTerms={searchTerms} />
             </Badge>
             <Badge variant="outline">
@@ -72,9 +74,10 @@ export function ResourceCard({
           <div className="space-y-2">
             <p>Risk level: {guide.risk_level}</p>
             <p>Last reviewed: {guide.last_reviewed}</p>
+            <p>Use when: {guide.when_to_use}</p>
           </div>
           <span className="card-action-line text-primary">
-            Open guide
+            Open page
             <ArrowRight className="size-4" />
           </span>
         </CardContent>
