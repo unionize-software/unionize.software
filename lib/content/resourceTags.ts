@@ -46,7 +46,22 @@ export const resourceTagDefinitions: ResourceTagDefinition[] = [
   {
     id: "contractors",
     label: "Contractors and exclusions",
-    slugs: ["contractor-vendor-misclassification", "supervisor-status-and-exclusion"],
+    slugs: [
+      "contractor-vendor-misclassification",
+      "supervisor-status-and-exclusion",
+      "public-sector-workers-start-here",
+      "outside-the-united-states-start-here",
+    ],
+  },
+  {
+    id: "coverage-off-ramps",
+    label: "Coverage and off-ramps",
+    slugs: [
+      "public-sector-workers-start-here",
+      "outside-the-united-states-start-here",
+      "contractor-vendor-misclassification",
+      "supervisor-status-and-exclusion",
+    ],
   },
   {
     id: "recognition",

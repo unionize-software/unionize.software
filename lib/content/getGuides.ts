@@ -14,7 +14,7 @@ import {
 const guidesDirectory = path.join(process.cwd(), "content", "guides");
 const staticPagesDirectory = path.join(process.cwd(), "content", "pages");
 
-export type GuideListDocument = GuideFrontmatter & {
+export type GuideListDocument = Omit<GuideFrontmatter, "sources"> & {
   excerpt: string;
 };
 
@@ -22,7 +22,9 @@ export type GuideSearchIndexDocument = GuideListDocument & {
   searchText: string;
 };
 
-export type GuideDocument = GuideSearchIndexDocument & {
+export type GuideDocument = GuideFrontmatter & {
+  excerpt: string;
+  searchText: string;
   body: string;
 };
 

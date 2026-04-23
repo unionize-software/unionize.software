@@ -27,6 +27,18 @@ const startHereLinks = [
     description:
       "Use this when the employer relationship itself is muddy or split across staffing layers.",
   },
+  {
+    href: "/resources/public-sector-workers-start-here" as Route,
+    title: "Public-sector workers: start here",
+    description:
+      "A clean off-ramp for workers whose employer is a government body, public university, school district, or other public entity.",
+  },
+  {
+    href: "/resources/outside-the-united-states-start-here" as Route,
+    title: "Outside the United States: start here",
+    description:
+      "A boundary page for workers using the site outside the U.S. labor-law lane.",
+  },
 ] as const;
 
 const commonIdeas = [
@@ -86,7 +98,7 @@ export default function KnowYourRightsPage() {
         title: "Use this section to get the labor basics straight before you gamble on rumor.",
         body: [
           "This is where workers should start when they need the ground rules on concerted activity, exclusions, retaliation, and why private-sector status matters.",
-          "A rights page should make people calmer and more precise. If it makes them feel invincible, it is doing the opposite of its job.",
+          "It also includes the cleanest off-ramps for workers who are public-sector, outside the United States, or otherwise outside the main NLRA lane.",
         ],
       }}
       startHere={{

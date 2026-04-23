@@ -22,6 +22,7 @@ collections:
   - "issue-guides"
 related_slugs:
   - ""
+sources: []
 ---
 
 Short orienting paragraph.
@@ -57,6 +58,7 @@ collections:
   - "checklists-tools"
 related_slugs:
   - ""
+sources: []
 ---
 
 Short orienting paragraph.
@@ -90,6 +92,12 @@ collections:
   - "reference"
 related_slugs:
   - ""
+sources:
+  - title: ""
+    url: "https://"
+    publisher: ""
+    kind: "government"
+    note: ""
 ---
 
 Short orienting paragraph.
@@ -121,6 +129,12 @@ collections:
   - "evidence-leverage"
 related_slugs:
   - ""
+sources:
+  - title: ""
+    url: "https://"
+    publisher: ""
+    kind: "research"
+    note: ""
 ---
 
 Short orienting paragraph.
@@ -133,3 +147,9 @@ Short orienting paragraph.
 
 ## Sources
 ```
+
+## Sourcing Notes
+
+- Use structured `sources` metadata for any page that is `mixed` or `source-backed`, unless a body `Sources` section is clearly the better fit.
+- Keep link text descriptive and specific.
+- If a page needs a long "further reading" appendix, split the page instead of bloating it.

@@ -77,6 +77,16 @@ test("/resources/software-worker-scale-and-leverage shows resource page chrome",
   await expect(page.getByText("When to use")).toBeVisible();
 });
 
+test("/resources/public-sector-workers-start-here shows structured sources", async ({ page }) => {
+  await page.goto("/resources/public-sector-workers-start-here");
+
+  await expect(page.getByRole("heading", { name: "Source footing" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Are You Covered\?/ })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /The Statute: Section 7102. Employees' rights/ }),
+  ).toBeVisible();
+});
+
 test("/organize shows hub page structure", async ({ page }) => {
   await page.goto("/organize");
 

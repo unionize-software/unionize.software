@@ -48,6 +48,11 @@ export default async function ResourcesPage() {
               Use checklists and reference pages when you need something shorter, calmer, and easier
               to share with one trusted coworker.
             </p>
+            <p>
+              If the main U.S. private-sector lane does not fit because the workplace is public-sector,
+              outside the United States, or split across unclear statuses, start with the off-ramp pages
+              instead of forcing the wrong frame.
+            </p>
           </CardContent>
         </Card>
 

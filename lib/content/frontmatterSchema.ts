@@ -3,8 +3,17 @@ import { z } from "zod";
 import {
   guideCollectionIds,
   guidePageTypes,
+  guideSourceKinds,
   guideSourceStatuses,
 } from "@/lib/content/contentModel";
+
+const guideSourceSchema = z.object({
+  title: z.string().min(1),
+  url: z.string().url(),
+  publisher: z.string().min(1),
+  kind: z.enum(guideSourceKinds),
+  note: z.string().min(1).optional(),
+});
 
 export const guideFrontmatterSchema = z.object({
   title: z.string().min(1),
@@ -21,6 +30,7 @@ export const guideFrontmatterSchema = z.object({
   not_for: z.string().min(1),
   collections: z.array(z.enum(guideCollectionIds)).nonempty(),
   related_slugs: z.array(z.string().min(1)).default([]),
+  sources: z.array(guideSourceSchema).default([]),
 });
 
 export const staticPageFrontmatterSchema = z.object({

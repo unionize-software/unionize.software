@@ -30,9 +30,20 @@ This project should sound steady, specific, and useful. It should not sound like
 
 - Date any statistic, legal rule, or trend claim that could age.
 - Use primary or near-primary sources when making evidence claims.
+- Prefer links in context where the reader actually needs them, not a giant dump of links with no explanation.
 - If a page relies mainly on practice and not formal sourcing, mark it `practice-based`.
-- Evidence pages should have a `Sources` section.
+- `mixed` and `source-backed` pages should usually declare structured `sources` metadata so the page rail can show the source footing clearly.
+- Evidence pages should have either a structured source list, a body `Sources` section, or both.
 - Legal-adjacent pages should stay educational, not advisory.
+- Link to the hosting page, not a raw attachment, when possible.
+
+## Source Handling
+
+- Use the fewest sources that can actually support the page well.
+- Prefer government agencies, statute text, official international standards, and direct research over commentary about commentary.
+- Do not use a source just because it agrees with the page. Use it because it is the cleanest support for the claim.
+- If a page needs a large pile of sources to stay upright, the page is probably trying to do too much.
+- When a page mixes sourced footing with practical advice, keep the sourced part narrow and make the judgment calls explicit.
 
 ## Warnings
 
@@ -57,3 +68,11 @@ Most pages should follow a readable sequence:
 5. What to read next
 
 Checklists and reference pages can be shorter, but they should still make the boundary clear.
+
+## External References
+
+- GOV.UK content design guidance on links and in-context linking: <https://www.gov.uk/guidance/content-design/links>
+- GOV.UK guidance on meeting user needs and avoiding unnecessary content: <https://www.gov.uk/guidance/content-design/writing-for-gov-uk>
+- MDN writing guidelines and page-type discipline: <https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines>
+- GitHub Docs content model overview: <https://docs.github.com/en/contributing/style-guide-and-content-model/about-the-content-model>
+- Diataxis documentation framework: <https://diataxis.fr/>

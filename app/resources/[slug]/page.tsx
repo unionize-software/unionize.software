@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import {
   guidePageTypeLabels,
+  guideSourceKindLabels,
   guideSourceStatusLabels,
 } from "@/lib/content/contentModel";
 import { renderMdx } from "@/lib/content/mdx";
@@ -52,6 +53,8 @@ export default async function ResourceDetailPage({
   const resourceTags = getGuideResourceTags(guide.slug);
   const headings = extractGuideHeadings(guide.body).filter((heading) => heading.id !== "sources");
   const hasSourcesSection = guideHasSourcesSection(guide.body);
+  const hasStructuredSources = guide.sources.length > 0;
+  const hasAnySources = hasStructuredSources || hasSourcesSection;
   const primarySection = wikiSections[0];
   const pageType = guidePageTypeLabels[guide.page_type];
   const sourceStatus = guideSourceStatusLabels[guide.source_status];
@@ -124,62 +127,68 @@ export default async function ResourceDetailPage({
         </Card>
 
         <div className="space-y-4 lg:sticky lg:top-24">
-            <Card className="bg-card/90">
-              <CardHeader>
-                <Badge variant="outline" className="w-fit">
-                  Page facts
-                </Badge>
-                <CardTitle className="text-xl tracking-tight">Use this page as reference, not as a script.</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm text-muted-foreground">
-                <div>
-                  <p className="font-semibold text-foreground">Page type</p>
-                  <p>{pageType}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Category</p>
-                  <p>{guide.category}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Risk level</p>
-                  <p>{guide.risk_level}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Jurisdiction</p>
-                  <p>{guide.jurisdiction}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">When to use</p>
-                  <p>{guide.when_to_use}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Not for</p>
-                  <p>{guide.not_for}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Last reviewed</p>
-                  <p>{formattedReviewDate}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Review status</p>
-                  <p>{guide.review_status}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Source footing</p>
-                  <p>{sourceStatus}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Source list</p>
-                  <p>{hasSourcesSection ? "Listed on this page" : "Not yet added to this page"}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Legal scope</p>
-                  <p>{guide.legal_scope}</p>
-                </div>
-              </CardContent>
-            </Card>
+          <Card className="bg-card/90">
+            <CardHeader>
+              <Badge variant="outline" className="w-fit">
+                Page facts
+              </Badge>
+              <CardTitle className="text-xl tracking-tight">Use this page as reference, not as a script.</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-muted-foreground">
+              <div>
+                <p className="font-semibold text-foreground">Page type</p>
+                <p>{pageType}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Category</p>
+                <p>{guide.category}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Risk level</p>
+                <p>{guide.risk_level}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Jurisdiction</p>
+                <p>{guide.jurisdiction}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">When to use</p>
+                <p>{guide.when_to_use}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Not for</p>
+                <p>{guide.not_for}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Last reviewed</p>
+                <p>{formattedReviewDate}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Review status</p>
+                <p>{guide.review_status}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Source footing</p>
+                <p>{sourceStatus}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Source list</p>
+                <p>
+                  {hasStructuredSources
+                    ? `${guide.sources.length} structured source${guide.sources.length === 1 ? "" : "s"}`
+                    : hasSourcesSection
+                      ? "Listed in page body"
+                      : "Not yet added to this page"}
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Legal scope</p>
+                <p>{guide.legal_scope}</p>
+              </div>
+            </CardContent>
+          </Card>
 
-          {headings.length > 0 || hasSourcesSection ? (
+          {headings.length > 0 || hasAnySources ? (
             <Card className="bg-card/82">
               <CardHeader>
                 <Badge variant="outline" className="w-fit">
@@ -202,12 +211,50 @@ export default async function ResourceDetailPage({
                     <span className="text-sm leading-6">{heading.title}</span>
                   </a>
                 ))}
-                {hasSourcesSection ? (
+                {hasAnySources ? (
                   <a href="#sources" className="toc-link" data-depth={2}>
                     <span className="toc-link-bullet" />
                     <span className="text-sm leading-6">Sources</span>
                   </a>
                 ) : null}
+              </CardContent>
+            </Card>
+          ) : null}
+
+          {hasStructuredSources ? (
+            <Card className="bg-card/80" id="sources">
+              <CardHeader>
+                <Badge variant="outline" className="w-fit">
+                  Sources
+                </Badge>
+                <CardTitle className="text-xl tracking-tight">Source footing</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  These are the pages this guide leans on for its dated claims and legal footing.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {guide.sources.map((source) => (
+                  <a
+                    key={source.url}
+                    href={source.url}
+                    rel="noreferrer"
+                    target="_blank"
+                    className="interactive-card block rounded-2xl border border-border bg-background/72 px-4 py-4 text-sm text-muted-foreground"
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline">{guideSourceKindLabels[source.kind]}</Badge>
+                      <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
+                        {source.publisher}
+                      </span>
+                    </div>
+                    <p className="mt-3 font-semibold leading-6 text-foreground">{source.title}</p>
+                    {source.note ? <p className="mt-2 leading-6">{source.note}</p> : null}
+                    <span className="card-action-line mt-4 text-primary">
+                      Open source
+                      <ArrowRight className="size-4" />
+                    </span>
+                  </a>
+                ))}
               </CardContent>
             </Card>
           ) : null}

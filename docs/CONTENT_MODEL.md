@@ -32,6 +32,18 @@ Every guide must declare:
 - `collections`
 - `related_slugs`
 
+Pages may also declare:
+
+- `sources`
+
+Use `sources` for `mixed` and `source-backed` pages when you want the resource page to render a structured source rail. Each source should include:
+
+- `title`
+- `url`
+- `publisher`
+- `kind`
+- optional `note`
+
 ## Collection IDs
 
 Collections drive the wiki shelves on `/resources`.
@@ -51,9 +63,9 @@ Collections are not the same thing as page types. A `reference` page can still a
 - `practice-based`
   Use when the page mainly reflects organizing judgment, campaign hygiene, or practical experience and does not yet carry a formal source list.
 - `mixed`
-  Use when the page blends sourced claims with practical guidance.
+  Use when the page blends sourced claims with practical guidance. Prefer a structured `sources` list unless the page genuinely needs a fuller narrative `Sources` section in the body.
 - `source-backed`
-  Use when the page makes evidence-heavy claims and should include an explicit source list.
+  Use when the page makes evidence-heavy claims and should include an explicit source list, a structured `sources` list, or both.
 
 ## Metadata Rules
 
@@ -61,3 +73,4 @@ Collections are not the same thing as page types. A `reference` page can still a
 - `not_for` should define the page boundary clearly, not defensively.
 - `related_slugs` should point to the next 2 to 4 pages that genuinely deepen the path.
 - `review_status` should stay honest. Do not imply legal review or subject-matter review that did not happen.
+- Keep source metadata tight. The rail should list the sources the page actually leans on, not every vaguely relevant link the author found.

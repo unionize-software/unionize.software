@@ -18,6 +18,24 @@ export const guideSourceStatuses = ["practice-based", "mixed", "source-backed"] 
 
 export type GuideSourceStatus = (typeof guideSourceStatuses)[number];
 
+export const guideSourceKinds = [
+  "government",
+  "statute",
+  "international",
+  "research",
+  "other",
+] as const;
+
+export type GuideSourceKind = (typeof guideSourceKinds)[number];
+
+export type GuideSource = {
+  title: string;
+  url: string;
+  publisher: string;
+  kind: GuideSourceKind;
+  note?: string;
+};
+
 export const guidePageTypeLabels: Record<GuidePageType, string> = {
   playbook: "Playbook",
   checklist: "Checklist",
@@ -29,6 +47,14 @@ export const guideSourceStatusLabels: Record<GuideSourceStatus, string> = {
   "practice-based": "Practice-based",
   mixed: "Mixed sourcing",
   "source-backed": "Source-backed",
+};
+
+export const guideSourceKindLabels: Record<GuideSourceKind, string> = {
+  government: "Government / agency",
+  statute: "Law / official text",
+  international: "International standard",
+  research: "Research / analysis",
+  other: "Other source",
 };
 
 export const guideCollectionDefinitions: Record<
@@ -48,7 +74,8 @@ export const guideCollectionDefinitions: Record<
   },
   "worker-status": {
     title: "Worker Status & Exclusions",
-    description: "Use these pages when titles, classification, or legal lane are not straightforward.",
+    description:
+      "Use these pages when titles, classification, exclusions, or the basic legal lane are not straightforward.",
   },
   "campaign-stages": {
     title: "Campaign Stages",

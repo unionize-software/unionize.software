@@ -61,6 +61,14 @@ const resourceLibrary: Record<string, ResourceLink> = {
     title: "Contractor, Vendor, and Misclassification Questions",
     href: "/resources/contractor-vendor-misclassification",
   },
+  publicSector: {
+    title: "Public-Sector Workers: Start Here",
+    href: "/resources/public-sector-workers-start-here",
+  },
+  nonUs: {
+    title: "Outside the United States: Start Here",
+    href: "/resources/outside-the-united-states-start-here",
+  },
   discrimination: {
     title: "Discrimination, Exclusion, and Organizing Safely",
     href: "/resources/discrimination-exclusion-and-organizing-safely",
@@ -123,6 +131,39 @@ function getWorkArrangementNextStep(answers: StartAnswers) {
     case "mostly remote/distributed":
       return "Build one-to-one trust across personal channels, then map by team, manager, vendor chain, and time zone before creating larger group spaces.";
   }
+}
+
+function getExclusionLaneDetails(answers: StartAnswers) {
+  if (answers.inUnitedStates !== "yes") {
+    return {
+      likelyPath: "Outside-the-United-States off-ramp",
+      whyThisPath:
+        "Your answers suggest that the site's main U.S. private-sector labor-law lane does not govern your workplace directly. The useful next step is to ground the issue in your own country's labor institutions instead of importing NLRA assumptions.",
+      nextStep:
+        "Identify the labor ministry, labour inspectorate, labor board, or union structure that governs your own country before treating the U.S. rights pages as operative law.",
+      resources: [resourceLibrary.nonUs, resourceLibrary.conversations, resourceLibrary.retaliation],
+    };
+  }
+
+  if (answers.privateSectorEmployer !== "yes") {
+    return {
+      likelyPath: "Public-sector off-ramp",
+      whyThisPath:
+        "Your answers suggest that you are dealing with a public employer, which means the standard NLRA lane is not the governing framework. The first job is to identify whether the workplace is federal, state, or local and which public-sector rules apply.",
+      nextStep:
+        "Figure out whether the employer is federal, state, or local, then find the governing public-sector labor board, statute, or bargaining framework for that lane.",
+      resources: [resourceLibrary.publicSector, resourceLibrary.retaliation, resourceLibrary.conversations],
+    };
+  }
+
+  return {
+    likelyPath: "Possible contractor or misclassification lane",
+    whyThisPath:
+      "Your answers raise questions about worker classification or legal coverage. The safest next step is to get clearer on that before assuming the usual private-sector employee rules apply in a straightforward way.",
+    nextStep:
+      "Gather the facts about payroll, day-to-day supervision, vendor chain, and control before assuming the standard employee lane.",
+    resources: [resourceLibrary.contractor, resourceLibrary.conversations, resourceLibrary.retaliation],
+  };
 }
 
 export function buildStartResult(answers: StartAnswers): StartResult {
@@ -217,8 +258,16 @@ export function buildStartResult(answers: StartAnswers): StartResult {
   };
 
   const baseResult = resultByPrimary[primary];
-  const resources = [...baseResult.resources];
-  const next72Hours = [...baseResult.next72Hours, getWorkArrangementNextStep(answers)];
+  const exclusionLaneDetails =
+    primary === "POSSIBLE_CONTRACTOR_OR_EXCLUSION" ? getExclusionLaneDetails(answers) : null;
+
+  const resources = [...(exclusionLaneDetails?.resources ?? baseResult.resources)];
+  const next72Hours = [
+    ...(primary === "POSSIBLE_CONTRACTOR_OR_EXCLUSION"
+      ? [...commonNext72Hours, exclusionLaneDetails!.nextStep]
+      : baseResult.next72Hours),
+    getWorkArrangementNextStep(answers),
+  ];
 
   if (answers.topIssue === "AI surveillance") {
     resources.push(resourceLibrary.ai, resourceLibrary.keystrokes);
@@ -269,8 +318,8 @@ export function buildStartResult(answers: StartAnswers): StartResult {
 
   return {
     classifications,
-    likelyPath: baseResult.likelyPath,
-    whyThisPath: buildWhyThisPath(answers, primary),
+    likelyPath: exclusionLaneDetails?.likelyPath ?? baseResult.likelyPath,
+    whyThisPath: exclusionLaneDetails?.whyThisPath ?? buildWhyThisPath(answers, primary),
     whatNotToDo: commonWhatNotToDo,
     next72Hours,
     relevantResources: dedupeResources(resources),
