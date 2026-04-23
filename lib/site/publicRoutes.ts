@@ -7,6 +7,7 @@ export type NavItem = {
 
 export const primaryNavItems = [
   { href: "/resources", label: "Wiki" },
+  { href: "/evidence", label: "Evidence" },
   { href: "/organize", label: "Organize" },
   { href: "/know-your-rights", label: "Rights" },
   { href: "/ai-surveillance", label: "AI & Data" },
@@ -15,6 +16,7 @@ export const primaryNavItems = [
 ] as const satisfies ReadonlyArray<NavItem>;
 
 export const footerNavItems = [
+  { href: "/evidence", label: "Evidence" },
   { href: "/resources", label: "Wiki" },
   { href: "/tooling", label: "Tooling" },
   { href: "/start", label: "Pathfinder" },
@@ -29,6 +31,7 @@ export const staticPublicRoutes = [
   "/ai-surveillance",
   "/ai-surveillance/keystrokes",
   "/coops",
+  "/evidence",
   "/first-contract",
   "/game-workers",
   "/know-your-rights",

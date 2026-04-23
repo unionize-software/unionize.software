@@ -61,6 +61,17 @@ const wikiSectionDefinitions: WikiSectionDefinition[] = [
     ],
   },
   {
+    id: "evidence-leverage",
+    title: "Evidence & Leverage",
+    description:
+      "Use these pages when you need facts, history, and a calmer answer to the claim that software workers cannot organize.",
+    slugs: [
+      "software-worker-scale-and-leverage",
+      "why-software-workers-have-been-slow-to-unionize",
+      "what-collective-bargaining-can-change-for-software-workers",
+    ],
+  },
+  {
     id: "checklists-tools",
     title: "Checklists & Tools",
     description: "Short practical pages for the first moves workers usually need to make.",

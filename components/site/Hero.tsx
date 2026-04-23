@@ -12,11 +12,11 @@ export function Hero() {
         <Badge className="w-fit rounded-full border-primary/25 bg-primary/10 px-4 py-2 text-[0.75rem] text-primary shadow-[0_10px_24px_rgba(179,36,0,0.08)]">
           A place to get oriented
         </Badge>
-        <div className="space-y-4">
-          <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl xl:text-6xl">
+        <div className="hero-copy-shell space-y-4">
+          <h1 className="display-title max-w-4xl text-4xl font-semibold text-balance text-foreground sm:text-5xl xl:text-6xl">
             If something at work feels wrong, you do not have to figure it out alone.
           </h1>
-          <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
+          <p className="max-w-2xl text-[1.06rem] leading-8 text-foreground/88 sm:text-[1.1rem]">
             unionize.software is a public organizing wiki for U.S. private-sector software and
             game workers. It is here to help you understand what is happening, compare notes more
             safely, and figure out a sensible next step.

@@ -83,11 +83,59 @@ export default function HomePage() {
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-border bg-background/75 p-5">
               <p className="font-medium">What you can do here</p>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <li>Read issue guides, rights explainers, and campaign-stage pages</li>
-                <li>Use checklists for documentation, first conversations, and common mistakes</li>
-                <li>Browse by work mode: in-person, hybrid, or remote/distributed</li>
-                <li>Use the optional local-only pathfinder if you want a narrower route in</li>
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
+                <li>
+                  Read{" "}
+                  <Link href="/resources#issue-guides" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    issue guides
+                  </Link>
+                  ,{" "}
+                  <Link href="/know-your-rights" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    rights explainers
+                  </Link>
+                  , and{" "}
+                  <Link href="/resources#campaign-stages" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    campaign-stage pages
+                  </Link>
+                  .
+                </li>
+                <li>
+                  Use{" "}
+                  <Link href="/resources#checklists-tools" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    checklists
+                  </Link>{" "}
+                  for documentation,{" "}
+                  <Link href="/resources/first-organizing-conversation-checklist" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    first conversations
+                  </Link>
+                  , and{" "}
+                  <Link href="/resources/what-not-to-do-checklist" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    common mistakes
+                  </Link>
+                  .
+                </li>
+                <li>
+                  Browse by{" "}
+                  <Link href="/resources#work-modes" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    work mode
+                  </Link>
+                  : in-person, hybrid, or remote/distributed.
+                </li>
+                <li>
+                  Use the{" "}
+                  <Link href="/evidence" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    evidence pages
+                  </Link>{" "}
+                  when you need numbers, history, and a steadier answer to the claim that software
+                  workers cannot organize.
+                </li>
+                <li>
+                  Use the optional local-only{" "}
+                  <Link href="/start" className="text-foreground underline decoration-primary/45 underline-offset-4 hover:text-primary">
+                    pathfinder
+                  </Link>{" "}
+                  if you want a narrower route in.
+                </li>
               </ul>
             </div>
             <div className="rounded-2xl border border-border bg-background/75 p-5">
@@ -229,6 +277,20 @@ export default function HomePage() {
               </p>
               <span className="card-action-line mt-4 text-primary">
                 Open section
+                <ArrowRight className="size-4" />
+              </span>
+            </Link>
+            <Link
+              className="interactive-card block rounded-2xl border border-border bg-background/70 p-4"
+              href="/evidence"
+            >
+              <p className="font-semibold">Evidence and leverage</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Workforce size, low union density, why tech stayed weakly organized, and what
+                collective bargaining can actually change.
+              </p>
+              <span className="card-action-line mt-4 text-primary">
+                Open page
                 <ArrowRight className="size-4" />
               </span>
             </Link>

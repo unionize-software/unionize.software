@@ -4,6 +4,7 @@ const pages = [
   "/",
   "/start",
   "/know-your-rights",
+  "/evidence",
   "/organize",
   "/ai-surveillance",
   "/ai-surveillance/keystrokes",
@@ -28,6 +29,7 @@ const mobilePages = [
   "/resources",
   "/resources/keystroke-tracking-ai-training",
   "/tooling",
+  "/evidence",
 ];
 
 for (const pagePath of pages) {

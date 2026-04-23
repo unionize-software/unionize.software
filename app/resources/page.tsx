@@ -40,6 +40,11 @@ export default async function ResourcesPage() {
               you actually have, not the one you wish you had.
             </p>
             <p>
+              If a coworker thinks software workers are too scattered, too well paid, or too
+              professional to organize, the evidence pages are the right place to slow that claim
+              down.
+            </p>
+            <p>
               Use checklists and reference pages when you need something shorter, calmer, and easier
               to share with one trusted coworker.
             </p>
@@ -141,6 +146,11 @@ export default async function ResourcesPage() {
               <p>
                 <span className="font-semibold text-foreground">Reference pages</span> help when
                 worker status, exclusions, or labor terms are unclear.
+              </p>
+              <p>
+                <span className="font-semibold text-foreground">Evidence pages</span> are for
+                moments when workers need numbers, history, and a sober case for why collective
+                bargaining can matter in software.
               </p>
             </CardContent>
           </Card>

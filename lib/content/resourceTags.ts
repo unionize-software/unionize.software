@@ -54,6 +54,15 @@ export const resourceTagDefinitions: ResourceTagDefinition[] = [
     slugs: ["recognition-majority-support-and-going-public", "first-contract-basics"],
   },
   {
+    id: "evidence",
+    label: "Evidence and leverage",
+    slugs: [
+      "software-worker-scale-and-leverage",
+      "why-software-workers-have-been-slow-to-unionize",
+      "what-collective-bargaining-can-change-for-software-workers",
+    ],
+  },
+  {
     id: "checklists",
     label: "Checklists",
     slugs: [
