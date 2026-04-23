@@ -79,6 +79,12 @@ const relatedLinks = [
       "Use this when harm is unequally distributed and workers need to organize without flattening the problem.",
   },
   {
+    href: "/resources/retaliation-response-checklist" as Route,
+    title: "Retaliation response checklist",
+    description:
+      "A short first-response page for the moment when management pressure is already starting to build.",
+  },
+  {
     href: "/start" as Route,
     title: "Optional local-only pathfinder",
     description:

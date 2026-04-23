@@ -15,6 +15,8 @@ const pages = [
   "/talk-to-organizer",
   "/resources",
   "/resources/keystroke-tracking-ai-training",
+  "/resources/retaliation-response-checklist",
+  "/resources/company-device-and-account-safety-checklist",
   "/tooling",
   "/tooling/cli",
   "/tooling/mcp",

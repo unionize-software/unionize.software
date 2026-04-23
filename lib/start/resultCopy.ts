@@ -45,6 +45,14 @@ const resourceLibrary: Record<string, ResourceLink> = {
     title: "Retaliation Warning Signs",
     href: "/resources/retaliation-warning-signs",
   },
+  retaliationChecklist: {
+    title: "Retaliation Response Checklist",
+    href: "/resources/retaliation-response-checklist",
+  },
+  deviceSafety: {
+    title: "Company Device and Account Safety Checklist",
+    href: "/resources/company-device-and-account-safety-checklist",
+  },
   game: {
     title: "Game Worker Crunch",
     href: "/resources/game-worker-crunch",
@@ -237,7 +245,12 @@ export function buildStartResult(answers: StartAnswers): StartResult {
         "Preserve concrete facts and dates without turning the situation into a public argument on company systems.",
         "Contact an organizer through encrypted intake if you need support quickly.",
       ],
-      resources: [resourceLibrary.retaliation, resourceLibrary.pca, resourceLibrary.conversations],
+      resources: [
+        resourceLibrary.retaliation,
+        resourceLibrary.retaliationChecklist,
+        resourceLibrary.deviceSafety,
+        resourceLibrary.pca,
+      ],
     },
     GAME_WORKER_PATH: {
       likelyPath: "Game worker lane",
@@ -298,7 +311,7 @@ export function buildStartResult(answers: StartAnswers): StartResult {
   }
 
   if (answers.retaliationRisk === "yes") {
-    resources.push(resourceLibrary.retaliation);
+    resources.push(resourceLibrary.retaliation, resourceLibrary.retaliationChecklist);
   }
 
   if (answers.trustedCoworkers === "4+ trusted coworkers") {
@@ -314,6 +327,10 @@ export function buildStartResult(answers: StartAnswers): StartResult {
 
   if (answers.supervisoryAuthority === "yes" || answers.supervisoryAuthority === "unsure") {
     resources.push(resourceLibrary.supervisor);
+  }
+
+  if (answers.organizerContact === "yes" || answers.retaliationRisk === "yes") {
+    resources.push(resourceLibrary.deviceSafety);
   }
 
   return {

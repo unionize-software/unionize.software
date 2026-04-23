@@ -79,6 +79,12 @@ const relatedLinks = [
       "Ground the strategy in the basic labor-rights framework before assuming every risky move is protected.",
   },
   {
+    href: "/resources/company-device-and-account-safety-checklist" as Route,
+    title: "Company device and account safety checklist",
+    description:
+      "Use this before sensitive conversations migrate off employer systems and into personal channels.",
+  },
+  {
     href: "/resources/contractor-vendor-misclassification" as Route,
     title: "Contractor, vendor, and misclassification questions",
     description:
