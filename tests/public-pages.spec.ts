@@ -67,3 +67,11 @@ test("/resources supports optional tag filters", async ({ page }) => {
   ).toBeVisible();
   await expect(searchResults.getByText("Layoffs and Severance", { exact: true })).toHaveCount(0);
 });
+
+test("/resources/software-worker-scale-and-leverage shows resource page chrome", async ({ page }) => {
+  await page.goto("/resources/software-worker-scale-and-leverage");
+
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "On this page" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Sources" })).toBeVisible();
+});

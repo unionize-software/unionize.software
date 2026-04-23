@@ -4,12 +4,38 @@ import { notFound } from "next/navigation";
 
 import { renderMdx } from "@/lib/content/mdx";
 import { getGuideBySlug, getGuides, getGuideSlugs } from "@/lib/content/getGuides";
+import { extractGuideHeadings, guideHasSourcesSection } from "@/lib/content/guideStructure";
 import { getGuideResourceTags } from "@/lib/content/resourceTags";
 import { getRelatedGuidesForGuide, getWikiSectionsForGuide } from "@/lib/content/wiki";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const dynamicParams = false;
+
+function formatReviewDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00Z`));
+}
+
+function getGuidePageType(slug: string, category: string) {
+  if (slug.endsWith("-checklist") || category.toLowerCase().includes("checklist")) {
+    return "Checklist";
+  }
+
+  if (slug.includes("glossary") || category.toLowerCase().includes("reference")) {
+    return "Reference";
+  }
+
+  if (category.toLowerCase().includes("evidence")) {
+    return "Evidence page";
+  }
+
+  return "Guide";
+}
 
 export async function generateStaticParams() {
   const slugs = await getGuideSlugs();
@@ -36,22 +62,35 @@ export default async function ResourceDetailPage({
   const wikiSections = getWikiSectionsForGuide(guides, guide.slug);
   const relatedGuides = getRelatedGuidesForGuide(guides, guide.slug);
   const resourceTags = getGuideResourceTags(guide.slug);
+  const headings = extractGuideHeadings(guide.body).filter((heading) => heading.id !== "sources");
+  const hasSourcesSection = guideHasSourcesSection(guide.body);
+  const primarySection = wikiSections[0];
+  const pageType = getGuidePageType(guide.slug, guide.category);
+  const formattedReviewDate = formatReviewDate(guide.last_reviewed);
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <Link href="/resources" className="underline-offset-4 hover:text-foreground hover:underline">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm">
+          <Link href="/resources" className="breadcrumb-link">
             Wiki home
           </Link>
-          <span>/</span>
-          <span>{guide.title}</span>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Badge>{guide.category}</Badge>
-          <Badge variant="outline">{guide.jurisdiction}</Badge>
-          <Badge variant="outline">{guide.review_status}</Badge>
-          <Badge variant="outline">Reviewed {guide.last_reviewed}</Badge>
+          {primarySection ? (
+            <>
+              <span className="text-muted-foreground">/</span>
+              <Link href={`/resources#${primarySection.id}`} className="breadcrumb-link">
+                {primarySection.title}
+              </Link>
+            </>
+          ) : null}
+          <span className="text-muted-foreground">/</span>
+          <span className="text-foreground" aria-current="page">
+            {guide.title}
+          </span>
+        </nav>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge>{pageType}</Badge>
+          <Badge variant="outline">{guide.category}</Badge>
           {resourceTags.map((tag) => (
             <Badge key={tag.id} variant="outline">
               {tag.label}
@@ -59,17 +98,34 @@ export default async function ResourceDetailPage({
           ))}
         </div>
         <div className="space-y-3">
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-balance">
+          <h1 className="display-title max-w-4xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
             {guide.title}
           </h1>
-          <p className="text-lg text-muted-foreground">{guide.legal_scope}</p>
+          <p className="max-w-3xl text-[1.08rem] leading-8 text-foreground/82 sm:text-[1.15rem]">
+            {guide.excerpt}
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2 meta-line">
+            <span>{guide.jurisdiction}</span>
+            <span>Last reviewed {formattedReviewDate}</span>
+            <span>{guide.review_status.replace(/-/g, " ")}</span>
+            <span>{guide.risk_level} risk</span>
+          </div>
+          <p className="max-w-3xl text-sm leading-7 text-muted-foreground">{guide.legal_scope}</p>
         </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
         <Card className="bg-card/92">
           <CardHeader>
-            <CardTitle>Guide</CardTitle>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant="outline" className="w-fit">
+                {pageType}
+              </Badge>
+              {primarySection ? (
+                <p className="eyebrow-label text-muted-foreground">{primarySection.title}</p>
+              ) : null}
+            </div>
+            <CardTitle className="text-2xl tracking-tight">Read the page, then use the rail.</CardTitle>
           </CardHeader>
           <CardContent>
             <article data-prose className="max-w-none">
@@ -79,32 +135,81 @@ export default async function ResourceDetailPage({
         </Card>
 
         <div className="space-y-4 lg:sticky lg:top-24">
-          <Card className="bg-card/90">
-            <CardHeader>
-              <Badge variant="outline" className="w-fit">
-                Page details
-              </Badge>
-              <CardTitle className="text-xl tracking-tight">Use this page as reference, not as a script.</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <div>
-                <p className="font-semibold text-foreground">Risk level</p>
-                <p>{guide.risk_level}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">Jurisdiction</p>
-                <p>{guide.jurisdiction}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">Last reviewed</p>
-                <p>{guide.last_reviewed}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-foreground">Review status</p>
-                <p>{guide.review_status}</p>
-              </div>
-            </CardContent>
-          </Card>
+            <Card className="bg-card/90">
+              <CardHeader>
+                <Badge variant="outline" className="w-fit">
+                  Page facts
+                </Badge>
+                <CardTitle className="text-xl tracking-tight">Use this page as reference, not as a script.</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                <div>
+                  <p className="font-semibold text-foreground">Page type</p>
+                  <p>{pageType}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Category</p>
+                  <p>{guide.category}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Risk level</p>
+                  <p>{guide.risk_level}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Jurisdiction</p>
+                  <p>{guide.jurisdiction}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Last reviewed</p>
+                  <p>{formattedReviewDate}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Review status</p>
+                  <p>{guide.review_status}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Source list</p>
+                  <p>{hasSourcesSection ? "Listed on this page" : "Not yet added to this page"}</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Legal scope</p>
+                  <p>{guide.legal_scope}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+          {headings.length > 0 || hasSourcesSection ? (
+            <Card className="bg-card/82">
+              <CardHeader>
+                <Badge variant="outline" className="w-fit">
+                  On this page
+                </Badge>
+                <CardTitle className="text-xl tracking-tight">On this page</CardTitle>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  Jump to the section you need instead of skimming the whole page cold.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {headings.map((heading) => (
+                  <a
+                    key={heading.id}
+                    href={`#${heading.id}`}
+                    className="toc-link"
+                    data-depth={heading.depth}
+                  >
+                    <span className="toc-link-bullet" />
+                    <span className="text-sm leading-6">{heading.title}</span>
+                  </a>
+                ))}
+                {hasSourcesSection ? (
+                  <a href="#sources" className="toc-link" data-depth={2}>
+                    <span className="toc-link-bullet" />
+                    <span className="text-sm leading-6">Sources</span>
+                  </a>
+                ) : null}
+              </CardContent>
+            </Card>
+          ) : null}
 
           {wikiSections.length > 0 ? (
             <Card className="bg-card/80">
