@@ -1,0 +1,29 @@
+---
+title: "unionize.software CLI"
+slug: "tooling-cli"
+eyebrow: "CLI"
+description: "How the command-line interface exposes guides, search, and pathfinder logic without requiring people to scrape the site."
+---
+
+The CLI is the smallest useful interface for people who want the guide corpus outside the browser.
+
+## What it does
+
+- lists guides
+- reads guide pages by slug
+- searches guides by query and optional tag
+- exposes the Start Here schema
+- runs the pathfinder from structured JSON input
+
+## Example commands
+
+```bash
+pnpm unionize guides list
+pnpm unionize guides search "retaliation" --tag retaliation
+pnpm unionize guides read workplace-mapping
+pnpm unionize start schema --json
+```
+
+## Why it matters
+
+The CLI gives maintainers, organizers, and local automation a stable way to use the guide corpus without depending on rendered page structure.

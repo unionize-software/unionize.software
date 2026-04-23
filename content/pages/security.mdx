@@ -1,0 +1,25 @@
+---
+title: "Security Model"
+slug: "security"
+eyebrow: "Security"
+description: "Threats considered in V1 and the security posture for public content and encrypted intake."
+---
+
+V1 security is built around keeping the public site useful while minimizing the value of backend compromise.
+
+## Deliberate limits
+
+- No committee CRM
+- No coworker map storage
+- No intake plaintext at rest on the server
+- No service role key in client code
+
+## Intake design
+
+The browser encrypts the intake using an organizer public key. Only organizer-controlled private keys can decrypt the message locally.
+
+The site also publishes the active key ID and fingerprint so workers can verify key changes through a second channel. Intake requests are constrained by same-origin checks, rate limits, and payload-size caps.
+
+## Ongoing work
+
+Threat modeling, content review, and encryption-key handling should be revisited before any private workspace is built.

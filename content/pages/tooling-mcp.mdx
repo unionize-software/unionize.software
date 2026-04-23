@@ -1,0 +1,26 @@
+---
+title: "unionize.software MCP Server"
+slug: "tooling-mcp"
+eyebrow: "MCP"
+description: "How the local MCP server exposes guide resources, prompts, and tools for agents in a way that matches the public site."
+---
+
+The MCP server is the agent-facing layer for the public knowledge in this project.
+
+## What it exposes
+
+- `unionize://catalog`
+- `unionize://pathfinder/schema`
+- `unionize://guides/<slug>`
+- prompts for issue triage and first-conversation planning
+- tools for guide search, project links, and pathfinder routing
+
+## How to run it
+
+```bash
+pnpm mcp:serve
+```
+
+## Design boundary
+
+This MCP surface is intentionally narrow. It exposes public guide content and local routing logic. It does **not** expose encrypted intake content or any private organizer workspace.
