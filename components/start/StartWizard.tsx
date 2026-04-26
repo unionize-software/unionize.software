@@ -9,20 +9,26 @@ import { QuestionStep } from "@/components/start/QuestionStep";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { buildStartResult } from "@/lib/start/resultCopy";
-import { startQuestions, type StartAnswers, type StartQuestionId } from "@/lib/start/questions";
+import {
+  completeStartAnswers,
+  getStartQuestionFlow,
+  type StartAnswers,
+  type StartQuestionId,
+} from "@/lib/start/questions";
 
 export function StartWizard() {
   const router = useRouter();
   const { setSession } = useStartWizardSession();
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Partial<StartAnswers>>({});
+  const questionFlow = useMemo(() => getStartQuestionFlow(answers), [answers]);
 
   const answeredCount = useMemo(
-    () => Object.values(answers).filter((value) => typeof value === "string").length,
-    [answers],
+    () => questionFlow.filter((question) => typeof answers[question.id] === "string").length,
+    [answers, questionFlow],
   );
 
-  const currentQuestion = startQuestions[stepIndex];
+  const currentQuestion = questionFlow[Math.min(stepIndex, questionFlow.length - 1)];
 
   const handleSelect = (questionId: StartQuestionId, value: string) => {
     const nextAnswers = {
@@ -32,8 +38,10 @@ export function StartWizard() {
 
     setAnswers(nextAnswers);
 
-    if (stepIndex === startQuestions.length - 1) {
-      const completeAnswers = nextAnswers as StartAnswers;
+    const nextQuestionFlow = getStartQuestionFlow(nextAnswers);
+
+    if (stepIndex >= nextQuestionFlow.length - 1) {
+      const completeAnswers = completeStartAnswers(nextAnswers);
       const result = buildStartResult(completeAnswers);
 
       startTransition(() => {
@@ -47,7 +55,7 @@ export function StartWizard() {
       return;
     }
 
-    setStepIndex((current) => current + 1);
+    setStepIndex((current) => Math.min(current + 1, nextQuestionFlow.length - 1));
   };
 
   return (
@@ -56,7 +64,7 @@ export function StartWizard() {
         currentStep={stepIndex + 1}
         onSelect={(value) => handleSelect(currentQuestion.id, value)}
         question={currentQuestion}
-        totalSteps={startQuestions.length}
+        totalSteps={questionFlow.length}
       />
 
       <div className="space-y-6">
@@ -77,7 +85,7 @@ export function StartWizard() {
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-muted-foreground">
             <p>
-              {answeredCount} of {startQuestions.length} questions answered.
+              {answeredCount} of {questionFlow.length} questions answered in this path.
             </p>
             <div className="flex gap-3">
               <Button

@@ -61,8 +61,8 @@ export function classifyStartAnswers(answers: StartAnswers): StartClassification
 export function getPrimaryClassification(classifications: StartClassification[]) {
   const priority: StartClassification[] = [
     "RETALIATION_RISK_CONTACT_ORGANIZER",
-    "POSSIBLE_SUPERVISOR_EXCLUSION",
     "POSSIBLE_CONTRACTOR_OR_EXCLUSION",
+    "POSSIBLE_SUPERVISOR_EXCLUSION",
     "AI_SURVEILLANCE_ISSUE_CAMPAIGN",
     "GAME_WORKER_PATH",
     "FIRST_CONTRACT_OR_RECOGNITION_READY",
@@ -72,4 +72,3 @@ export function getPrimaryClassification(classifications: StartClassification[])
 
   return priority.find((classification) => classifications.includes(classification))!;
 }
-

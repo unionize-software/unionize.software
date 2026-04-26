@@ -181,3 +181,75 @@ export const startQuestions: StartQuestion[] = [
     ],
   },
 ];
+
+const questionsById = new Map(startQuestions.map((question) => [question.id, question]));
+
+const defaultStartAnswers: StartAnswers = {
+  inUnitedStates: "yes",
+  privateSectorEmployer: "unsure",
+  workerStatus: "unsure",
+  supervisoryAuthority: "no",
+  workplaceType: "other",
+  workArrangement: "mostly remote/distributed",
+  roleFamily: "other",
+  topIssue: "other",
+  trustedCoworkers: "none yet",
+  retaliationRisk: "no",
+  organizerContact: "no",
+};
+
+function getQuestionsById(ids: StartQuestionId[]) {
+  return ids.map((id) => {
+    const question = questionsById.get(id);
+
+    if (!question) {
+      throw new Error(`Unknown Start Here question: ${id}`);
+    }
+
+    return question;
+  });
+}
+
+export function completeStartAnswers(answers: Partial<StartAnswers>): StartAnswers {
+  return {
+    ...defaultStartAnswers,
+    ...answers,
+  };
+}
+
+export function getStartQuestionFlow(answers: Partial<StartAnswers>) {
+  if (!answers.inUnitedStates) {
+    return startQuestions;
+  }
+
+  if (answers.inUnitedStates === "no") {
+    return getQuestionsById([
+      "inUnitedStates",
+      "workArrangement",
+      "topIssue",
+      "trustedCoworkers",
+      "retaliationRisk",
+      "organizerContact",
+    ]);
+  }
+
+  if (!answers.privateSectorEmployer) {
+    return startQuestions;
+  }
+
+  if (answers.privateSectorEmployer !== "yes") {
+    return getQuestionsById([
+      "inUnitedStates",
+      "privateSectorEmployer",
+      "workerStatus",
+      "supervisoryAuthority",
+      "workArrangement",
+      "topIssue",
+      "trustedCoworkers",
+      "retaliationRisk",
+      "organizerContact",
+    ]);
+  }
+
+  return startQuestions;
+}
