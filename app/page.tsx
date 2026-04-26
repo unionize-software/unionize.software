@@ -81,7 +81,7 @@ export default function HomePage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-background/75 p-5">
+            <div className="rounded-xl border border-border bg-background/75 p-5">
               <p className="font-medium">What you can do here</p>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
                 <li>
@@ -138,7 +138,7 @@ export default function HomePage() {
                 </li>
               </ul>
             </div>
-            <div className="rounded-2xl border border-border bg-background/75 p-5">
+            <div className="rounded-xl border border-border bg-background/75 p-5">
               <p className="font-medium">What this site is not</p>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                 <li>Chat, forums, boards, and campaign CRM</li>
@@ -222,7 +222,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="pt-1">
                   <span className="card-action-line text-primary">
-                    Open page
+                    Read about {card.title}
                     <ArrowRight className="size-4" />
                   </span>
                 </CardContent>
@@ -239,7 +239,7 @@ export default function HomePage() {
           </CardHeader>
           <CardContent className="grid gap-4">
             <Link
-              className="interactive-card block rounded-2xl border border-border bg-background/70 p-4"
+              className="interactive-card block rounded-xl border border-border bg-background/70 p-4"
               href="/resources#issue-guides"
             >
               <p className="font-semibold">Issue guides</p>
@@ -248,12 +248,12 @@ export default function HomePage() {
                 other concrete workplace problems.
               </p>
               <span className="card-action-line mt-4 text-primary">
-                Open section
+                Browse issue guides
                 <ArrowRight className="size-4" />
               </span>
             </Link>
             <Link
-              className="interactive-card block rounded-2xl border border-border bg-background/70 p-4"
+              className="interactive-card block rounded-xl border border-border bg-background/70 p-4"
               href="/resources#work-modes"
             >
               <p className="font-semibold">Work modes</p>
@@ -262,12 +262,12 @@ export default function HomePage() {
                 different failure warnings.
               </p>
               <span className="card-action-line mt-4 text-primary">
-                Open section
+                Compare work modes
                 <ArrowRight className="size-4" />
               </span>
             </Link>
             <Link
-              className="interactive-card block rounded-2xl border border-border bg-background/70 p-4"
+              className="interactive-card block rounded-xl border border-border bg-background/70 p-4"
               href="/resources#checklists-tools"
             >
               <p className="font-semibold">Checklists and tools</p>
@@ -276,12 +276,12 @@ export default function HomePage() {
                 for stressed workers.
               </p>
               <span className="card-action-line mt-4 text-primary">
-                Open section
+                Use checklists
                 <ArrowRight className="size-4" />
               </span>
             </Link>
             <Link
-              className="interactive-card block rounded-2xl border border-border bg-background/70 p-4"
+              className="interactive-card block rounded-xl border border-border bg-background/70 p-4"
               href="/evidence"
             >
               <p className="font-semibold">Evidence and leverage</p>
@@ -290,7 +290,7 @@ export default function HomePage() {
                 collective bargaining can actually change.
               </p>
               <span className="card-action-line mt-4 text-primary">
-                Open page
+                Read evidence
                 <ArrowRight className="size-4" />
               </span>
             </Link>

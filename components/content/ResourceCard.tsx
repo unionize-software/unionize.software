@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { ArrowRight } from "lucide-react";
 
-import { guidePageTypeLabels } from "@/lib/content/contentModel";
+import { guidePageTypeActionLabels, guidePageTypeLabels } from "@/lib/content/contentModel";
 import type { GuideSearchResult } from "@/lib/content/search";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -77,7 +77,7 @@ export function ResourceCard({
             <p>Use when: {guide.when_to_use}</p>
           </div>
           <span className="card-action-line text-primary">
-            Open page
+            {guidePageTypeActionLabels[guide.page_type]}
             <ArrowRight className="size-4" />
           </span>
         </CardContent>

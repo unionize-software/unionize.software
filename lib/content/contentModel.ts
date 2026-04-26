@@ -43,6 +43,13 @@ export const guidePageTypeLabels: Record<GuidePageType, string> = {
   evidence: "Evidence page",
 };
 
+export const guidePageTypeActionLabels: Record<GuidePageType, string> = {
+  playbook: "Read playbook",
+  checklist: "Use checklist",
+  reference: "Check reference",
+  evidence: "Read evidence",
+};
+
 export const guideSourceStatusLabels: Record<GuideSourceStatus, string> = {
   "practice-based": "Practice-based",
   mixed: "Mixed sourcing",

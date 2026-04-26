@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { getGuides } from "@/lib/content/getGuides";
 import { resourcesSearchIndexPath } from "@/lib/content/searchIndex";
 import { buildWikiSections } from "@/lib/content/wiki";
+import { GuideLinkCard } from "@/components/content/GuideLinkCard";
 import { ResourceSearch } from "@/components/content/ResourceSearch";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { Badge } from "@/components/ui/badge";
@@ -72,15 +72,15 @@ export default async function ResourcesPage() {
               &quot;what do we do next?&quot; without jumping straight to a dramatic move.
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-primary/15 bg-background/70 p-4">
+              <div className="rounded-xl border border-primary/15 bg-background/70 p-4">
                 <p className="text-2xl font-semibold text-foreground">{guideCount}</p>
                 <p className="mt-1 text-sm">guides and checklists</p>
               </div>
-              <div className="rounded-2xl border border-primary/15 bg-background/70 p-4">
+              <div className="rounded-xl border border-primary/15 bg-background/70 p-4">
                 <p className="text-2xl font-semibold text-foreground">{wikiSections.length}</p>
                 <p className="mt-1 text-sm">browse sections</p>
               </div>
-              <div className="rounded-2xl border border-primary/15 bg-background/70 p-4">
+              <div className="rounded-xl border border-primary/15 bg-background/70 p-4">
                 <p className="text-2xl font-semibold text-foreground">0</p>
                 <p className="mt-1 text-sm">tracking scripts</p>
               </div>
@@ -115,7 +115,7 @@ export default async function ResourcesPage() {
                 <a
                   key={section.id}
                   href={`#${section.id}`}
-                  className="interactive-card block rounded-2xl border border-border bg-background/70 px-4 py-4"
+                  className="interactive-card block rounded-xl border border-border bg-background/70 px-4 py-4"
                 >
                   <p className="text-sm font-semibold text-foreground">{section.title}</p>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -182,23 +182,14 @@ export default async function ResourcesPage() {
                 </CardHeader>
                 <CardContent className="grid gap-4 md:grid-cols-2">
                   {section.guides.map((guide) => (
-                    <Link
-                      key={guide.slug}
-                      className="interactive-card block rounded-2xl border border-border bg-background/72 p-5"
+                    <GuideLinkCard
+                      category={guide.category}
+                      description={guide.excerpt}
                       href={`/resources/${guide.slug}`}
-                    >
-                      <p className="font-semibold text-foreground">{guide.title}</p>
-                      <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                        {guide.excerpt}
-                      </p>
-                      <p className="mt-4 text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
-                        {guide.category}
-                      </p>
-                      <span className="card-action-line mt-4 text-primary">
-                        Open guide
-                        <ArrowRight className="size-4" />
-                      </span>
-                    </Link>
+                      key={guide.slug}
+                      pageType={guide.page_type}
+                      title={guide.title}
+                    />
                   ))}
                 </CardContent>
               </Card>

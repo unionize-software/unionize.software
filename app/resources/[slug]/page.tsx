@@ -12,6 +12,7 @@ import { getGuideBySlug, getGuides, getGuideSlugs } from "@/lib/content/getGuide
 import { extractGuideHeadings, guideHasSourcesSection } from "@/lib/content/guideStructure";
 import { getGuideResourceTags } from "@/lib/content/resourceTags";
 import { getRelatedGuidesForGuide, getWikiSectionsForGuide } from "@/lib/content/wiki";
+import { GuideLinkCard } from "@/components/content/GuideLinkCard";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -239,7 +240,7 @@ export default async function ResourceDetailPage({
                     href={source.url}
                     rel="noreferrer"
                     target="_blank"
-                    className="interactive-card block rounded-2xl border border-border bg-background/72 px-4 py-4 text-sm text-muted-foreground"
+                    className="interactive-card block rounded-xl border border-border bg-background/72 px-4 py-4 text-sm text-muted-foreground"
                   >
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="outline">{guideSourceKindLabels[source.kind]}</Badge>
@@ -272,12 +273,12 @@ export default async function ResourceDetailPage({
                   <Link
                     key={section.id}
                     href={`/resources#${section.id}`}
-                    className="interactive-card block rounded-2xl border border-border bg-background/72 px-4 py-4 text-sm text-muted-foreground"
+                    className="interactive-card block rounded-xl border border-border bg-background/72 px-4 py-4 text-sm text-muted-foreground"
                   >
                     <p className="font-semibold text-foreground">{section.title}</p>
                     <p className="mt-1">{section.description}</p>
                     <span className="card-action-line mt-4 text-primary">
-                      Open section
+                      Browse section
                       <ArrowRight className="size-4" />
                     </span>
                   </Link>
@@ -296,18 +297,14 @@ export default async function ResourceDetailPage({
               </CardHeader>
               <CardContent className="space-y-2">
                 {relatedGuides.map((relatedGuide) => (
-                  <Link
-                    key={relatedGuide.slug}
+                  <GuideLinkCard
+                    actionLabel="Read related guide"
+                    description={relatedGuide.excerpt}
                     href={`/resources/${relatedGuide.slug}`}
-                    className="interactive-card block rounded-2xl border border-border bg-background/72 px-4 py-4 text-sm text-muted-foreground"
-                  >
-                    <p className="font-semibold text-foreground">{relatedGuide.title}</p>
-                    <p className="mt-1">{relatedGuide.excerpt}</p>
-                    <span className="card-action-line mt-4 text-primary">
-                      Open guide
-                      <ArrowRight className="size-4" />
-                    </span>
-                  </Link>
+                    key={relatedGuide.slug}
+                    pageType={relatedGuide.page_type}
+                    title={relatedGuide.title}
+                  />
                 ))}
               </CardContent>
             </Card>

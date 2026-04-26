@@ -76,7 +76,7 @@ function HubPageLinks({
         <Link
           key={link.href}
           href={link.href}
-          className="interactive-card block rounded-2xl border border-border bg-background/72 p-5"
+          className="interactive-card block rounded-xl border border-border bg-background/72 p-5"
         >
           <p className="font-semibold text-foreground">{link.title}</p>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">{link.description}</p>
@@ -86,7 +86,7 @@ function HubPageLinks({
             </p>
           ) : null}
           <span className="card-action-line mt-4 text-primary">
-            {link.cta ?? "Open page"}
+            {link.cta ?? "Read this page"}
             <ArrowRight className="size-4" />
           </span>
         </Link>
@@ -105,14 +105,12 @@ function HubInfoGrid({
   return (
     <div className={cn("grid gap-4", gridColumns[columns])}>
       {items.map((item) => (
-        <Card key={item.title} className="bg-card/88">
-          <CardHeader>
-            <CardTitle className="text-xl tracking-tight">{item.title}</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm leading-7 text-muted-foreground">
-            {item.description}
-          </CardContent>
-        </Card>
+        <div key={item.title} className="border-l-2 border-primary/40 py-1 pl-4">
+          <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold leading-tight tracking-[-0.03em]">
+            {item.title}
+          </h3>
+          <p className="mt-2 text-sm leading-7 text-muted-foreground">{item.description}</p>
+        </div>
       ))}
     </div>
   );

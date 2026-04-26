@@ -8,7 +8,7 @@ const startHereLinks = [
     title: "Keystroke tracking guide",
     description:
       "The most concrete starting page for workers dealing with input tracking, screenshot capture, and AI-training claims.",
-    cta: "Open guide",
+    cta: "Read keystroke guide",
   },
   {
     href: "/resources/ai-surveillance-worker-data" as Route,

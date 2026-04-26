@@ -99,7 +99,7 @@ export default function EvidencePage() {
           </CardHeader>
           <CardContent className="grid gap-3 sm:grid-cols-3">
             {evidenceStats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-primary/15 bg-background/76 p-4">
+              <div key={stat.label} className="rounded-xl border border-primary/15 bg-background/76 p-4">
                 <p className="text-2xl font-semibold tracking-tight text-foreground">{stat.value}</p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{stat.label}</p>
                 <p className="mt-3 text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground/80">
@@ -124,7 +124,7 @@ export default function EvidencePage() {
               </CardHeader>
               <CardContent className="pt-1">
                 <span className="card-action-line text-primary">
-                  Open page
+                  Read evidence
                   <ArrowRight className="size-4" />
                 </span>
               </CardContent>
