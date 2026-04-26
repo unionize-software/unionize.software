@@ -13,6 +13,7 @@ import { extractGuideHeadings, guideHasSourcesSection } from "@/lib/content/guid
 import { getGuideResourceTags } from "@/lib/content/resourceTags";
 import { getRelatedGuidesForGuide, getWikiSectionsForGuide } from "@/lib/content/wiki";
 import { GuideLinkCard } from "@/components/content/GuideLinkCard";
+import { GuideUseNote } from "@/components/content/GuideUseNote";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -106,6 +107,15 @@ export default async function ResourceDetailPage({
           <p className="max-w-3xl text-sm leading-7 text-muted-foreground">{guide.legal_scope}</p>
         </div>
       </div>
+
+      <GuideUseNote
+        formattedReviewDate={formattedReviewDate}
+        legalScope={guide.legal_scope}
+        notFor={guide.not_for}
+        riskLevel={guide.risk_level}
+        sourceStatus={sourceStatus}
+        whenToUse={guide.when_to_use}
+      />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
         <Card className="bg-card/92">

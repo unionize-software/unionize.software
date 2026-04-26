@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { usePathname } from "next/navigation";
 
 import { primaryNavItems } from "@/lib/site/publicRoutes";
@@ -35,7 +36,7 @@ export function Header() {
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={item.href as Route}
                 className={cn(
                   "relative pb-1 text-[0.9rem] font-medium tracking-[-0.01em] text-muted-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform hover:text-foreground hover:after:scale-x-100 sm:text-[0.95rem]",
                   active

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from "next";
 
 import { footerNavItems } from "@/lib/site/publicRoutes";
 
@@ -25,7 +26,7 @@ export function Footer() {
           {footerNavItems.map((item) => (
             <Link
               key={item.href}
-              href={item.href}
+              href={item.href as Route}
               className="underline-offset-4 hover:text-foreground hover:underline"
             >
               {item.label}

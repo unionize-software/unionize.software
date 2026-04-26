@@ -6,6 +6,7 @@ const pages = [
   "/know-your-rights",
   "/evidence",
   "/organize",
+  "/paths",
   "/ai-surveillance",
   "/ai-surveillance/keystrokes",
   "/game-workers",
@@ -14,6 +15,7 @@ const pages = [
   "/coops",
   "/talk-to-organizer",
   "/resources",
+  "/resources/safety-basics",
   "/resources/keystroke-tracking-ai-training",
   "/resources/retaliation-response-checklist",
   "/resources/company-device-and-account-safety-checklist",
@@ -28,7 +30,9 @@ const pages = [
 
 const mobilePages = [
   "/",
+  "/paths",
   "/resources",
+  "/resources/safety-basics",
   "/resources/keystroke-tracking-ai-training",
   "/tooling",
   "/evidence",
@@ -74,9 +78,33 @@ test("/resources/software-worker-scale-and-leverage shows resource page chrome",
   await page.goto("/resources/software-worker-scale-and-leverage");
 
   await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+  await expect(page.getByText("Before you use this page")).toBeVisible();
   await expect(page.getByRole("heading", { name: "On this page" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Sources" })).toBeVisible();
   await expect(page.getByText("When to use")).toBeVisible();
+});
+
+test("/paths shows worker reading paths", async ({ page }) => {
+  await page.goto("/paths");
+
+  await expect(page.getByRole("heading", { name: /Choose the route/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Retaliation or discipline risk" })).toBeVisible();
+  await expect(page.locator('a[href="/resources/safety-basics"]').first()).toHaveAttribute(
+    "href",
+    "/resources/safety-basics",
+  );
+  await expect(page.getByRole("link", { name: /AI Surveillance and Worker Data/ })).toHaveAttribute(
+    "href",
+    "/resources/ai-surveillance-worker-data",
+  );
+});
+
+test("/resources/safety-basics shows canonical safety page", async ({ page }) => {
+  await page.goto("/resources/safety-basics");
+
+  await expect(page.getByRole("heading", { name: "Safety Basics Before You Organize" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "First move: get off company systems" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Source footing" })).toBeVisible();
 });
 
 test("/resources/public-sector-workers-start-here shows structured sources", async ({ page }) => {

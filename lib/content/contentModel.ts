@@ -4,6 +4,7 @@ export type GuidePageType = (typeof guidePageTypes)[number];
 
 export const guideCollectionIds = [
   "issue-guides",
+  "safety",
   "work-modes",
   "worker-status",
   "campaign-stages",
@@ -74,6 +75,10 @@ export const guideCollectionDefinitions: Record<
   "issue-guides": {
     title: "Issue Guides",
     description: "Start with the problem workers are actually facing right now.",
+  },
+  safety: {
+    title: "Safety Basics",
+    description: "Start here when workers need to lower exposure before taking a bigger step.",
   },
   "work-modes": {
     title: "Work Modes",

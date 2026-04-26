@@ -33,6 +33,7 @@ export const resourceTagDefinitions: ResourceTagDefinition[] = [
     id: "retaliation",
     label: "Retaliation",
     slugs: [
+      "safety-basics",
       "retaliation-warning-signs",
       "retaliation-response-checklist",
       "protected-concerted-activity",
@@ -82,6 +83,7 @@ export const resourceTagDefinitions: ResourceTagDefinition[] = [
     id: "checklists",
     label: "Checklists",
     slugs: [
+      "safety-basics",
       "what-to-preserve-checklist",
       "first-organizing-conversation-checklist",
       "what-not-to-do-checklist",
@@ -93,9 +95,21 @@ export const resourceTagDefinitions: ResourceTagDefinition[] = [
     id: "device-safety",
     label: "Device and account safety",
     slugs: [
+      "safety-basics",
       "company-device-and-account-safety-checklist",
       "ai-surveillance-worker-data",
       "keystroke-tracking-ai-training",
+    ],
+  },
+  {
+    id: "safety-basics",
+    label: "Safety basics",
+    slugs: [
+      "safety-basics",
+      "company-device-and-account-safety-checklist",
+      "what-to-preserve-checklist",
+      "what-not-to-do-checklist",
+      "retaliation-response-checklist",
     ],
   },
   {

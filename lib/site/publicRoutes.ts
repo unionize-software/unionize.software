@@ -1,25 +1,29 @@
 import type { Route } from "next";
 
 export type NavItem = {
-  href: Route;
+  href: string;
   label: string;
 };
 
 export const primaryNavItems = [
+  { href: "/start", label: "Start Here" },
+  { href: "/resources/safety-basics", label: "Safety" },
+  { href: "/paths", label: "Paths" },
   { href: "/resources", label: "Wiki" },
-  { href: "/evidence", label: "Evidence" },
-  { href: "/organize", label: "Organize" },
   { href: "/know-your-rights", label: "Rights" },
-  { href: "/ai-surveillance", label: "AI & Data" },
+  { href: "/evidence", label: "Evidence" },
   { href: "/game-workers", label: "Game Workers" },
-  { href: "/start", label: "Pathfinder" },
 ] as const satisfies ReadonlyArray<NavItem>;
 
 export const footerNavItems = [
-  { href: "/evidence", label: "Evidence" },
+  { href: "/start", label: "Start Here" },
+  { href: "/paths", label: "Paths" },
   { href: "/resources", label: "Wiki" },
+  { href: "/resources/safety-basics", label: "Safety" },
+  { href: "/organize", label: "Organize" },
+  { href: "/ai-surveillance", label: "AI & Data" },
+  { href: "/evidence", label: "Evidence" },
   { href: "/tooling", label: "Tooling" },
-  { href: "/start", label: "Pathfinder" },
   { href: "/privacy", label: "Privacy" },
   { href: "/security", label: "Security" },
   { href: "/about", label: "About" },
@@ -36,12 +40,14 @@ export const staticPublicRoutes = [
   "/game-workers",
   "/know-your-rights",
   "/organize",
+  "/paths",
   "/privacy",
   "/recognition",
   "/resources",
   "/security",
   "/start",
   "/start/results",
+  "/talk-to-organizer",
   "/tooling",
   "/tooling/cli",
   "/tooling/mcp",

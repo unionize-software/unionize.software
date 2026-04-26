@@ -42,6 +42,10 @@ export type StartResult = {
 };
 
 const resourceLibrary: Record<string, ResourceLink> = {
+  safetyBasics: {
+    title: "Safety Basics Before You Organize",
+    href: "/resources/safety-basics",
+  },
   ai: {
     title: "AI Surveillance and Worker Data",
     href: "/resources/ai-surveillance-worker-data",
@@ -199,6 +203,8 @@ function getClassificationSummaries(classifications: StartClassification[]) {
 
 function getResourceReason(resource: ResourceLink, answers: StartAnswers) {
   switch (resource.href) {
+    case resourceLibrary.safetyBasics.href:
+      return "Use this before bigger steps. It covers personal devices, clean notes, and avoiding easy disciplinary pretexts.";
     case resourceLibrary.retaliationChecklist.href:
       return "Use this first if retaliation may already be happening. It keeps the next steps small, factual, and safer.";
     case resourceLibrary.retaliation.href:
@@ -475,7 +481,10 @@ export function buildStartResult(answers: StartAnswers): StartResult {
     primary === "POSSIBLE_CONTRACTOR_OR_EXCLUSION" ? getExclusionLaneDetails(answers) : null;
 
   const primaryResource = exclusionLaneDetails?.primaryResource ?? baseResult.primaryResource;
-  const resources = putResourceFirst(exclusionLaneDetails?.resources ?? baseResult.resources, primaryResource);
+  const resources = putResourceFirst(
+    [resourceLibrary.safetyBasics, ...(exclusionLaneDetails?.resources ?? baseResult.resources)],
+    primaryResource,
+  );
   const next72Hours = [
     ...(primary === "POSSIBLE_CONTRACTOR_OR_EXCLUSION"
       ? [...commonNext72Hours, exclusionLaneDetails!.nextStep]

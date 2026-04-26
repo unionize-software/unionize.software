@@ -28,7 +28,7 @@ export function GuideLinkCard({
 
   return (
     <Link
-      className="interactive-card block rounded-xl border border-border bg-background/72 p-5"
+      className="interactive-card block rounded-[8px] border border-border bg-background/72 p-5"
       href={href as Route}
     >
       <p className="font-semibold text-foreground">{title}</p>
