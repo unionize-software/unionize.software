@@ -5,16 +5,37 @@ eyebrow: "About"
 description: "Project scope, values, and why the first release is intentionally narrow."
 ---
 
-unionize.software is a privacy-first public resource for U.S. private-sector software and game workers.
+unionize.software is a free, privacy-first field guide for software and game workers who are trying to understand a workplace problem and decide what to do next.
 
-The first version is intentionally narrow:
+It begins from an ordinary but difficult moment: something changes at work, the explanation does not add up, and coworkers have not yet compared what they know. The site helps a worker name the issue, check the relevant limits, and choose a proportionate next step. It does not ask them to arrive with organizing vocabulary already in hand.
 
-- public educational content
-- a local-only decision wizard
-- encrypted organizer intake
+## What the first release does
 
-It does **not** include a committee workspace, coworker map storage, public campaign pages, or chat. Those features are deferred until the threat model and architecture are tighter.
+- publishes practical guides, checklists, rights references, and sourced evidence
+- offers a Start Here pathfinder whose answers stay in the browser
+- provides encrypted organizer intake for workers who want human support
+- exposes the public guide corpus through a CLI and MCP server
 
-The hope is simple: give people something useful when they are stressed, uncertain, or isolated, without asking them to trust one more platform than they already have to.
+The project is primarily written for U.S. private-sector workers. Pages that concern another jurisdiction or a narrower group say so explicitly. Public information can orient a reader; it cannot determine legal status or replace an organizer or lawyer who knows the facts.
 
-The design principle is just as simple: earn trust through restraint.
+## Restraint is part of the product
+
+The site does **not** include accounts, a committee workspace, stored coworker maps, campaign pages, or chat. It does not use behavioral analytics, ad pixels, or session replay.
+
+Those omissions are deliberate. A workplace-organizing product can become dangerous when it collects intimate relationships and sensitive plans simply because software makes collection easy. Private collaboration features should not exist here until their value clearly exceeds the exposure they create and the operating model can support them responsibly.
+
+## How the writing is made
+
+Each guide declares its jurisdiction, intended use, risk level, source posture, review status, and last review date. Legal orientation and documented facts should be traceable to nearby sources. Practice-based guidance should show its reasoning and its limits rather than borrowing the certainty of law.
+
+High-risk pages remain visibly marked when specialist review is still needed. That label is a publication control, not fine print.
+
+The editorial standard is practical: a page should help a worker see the situation more clearly, avoid an unnecessary risk, or carry out the next conversation. If it only sounds informed, it is not finished.
+
+## What the project will not pretend
+
+No website can promise anonymity, make organizing safe by default, or know a workplace better than the people inside it. Encryption cannot protect a compromised personal device or erase the identifying value of context. A checklist cannot settle whether a particular action is legally protected.
+
+The aim is narrower and more useful: reduce needless exposure, distinguish facts from assumptions, and help workers move from isolation toward careful collective judgment.
+
+The project’s public implementation and content live in the [unionize-software-webapp repository](https://github.com/unionize-software/unionize-software-webapp). Trust should be inspectable.

@@ -5,22 +5,34 @@ eyebrow: "Privacy"
 description: "How the site handles public browsing, the Start Here wizard, and encrypted organizer intake."
 ---
 
-This site is designed around data minimization.
+Privacy here begins with collecting less. The public guides do not require an account, and the Start Here pathfinder does not need to know who you are.
 
-## Start Here wizard
+## Public browsing
 
-The Start Here wizard keeps answers in local application state only. It does not create an account, write to the server, or send answers to analytics.
+The first release does not include Google Analytics, Hotjar, FullStory, session replay, ad pixels, or behavioral profiling. Normal hosting and network infrastructure may still process technical request information needed to deliver and protect the site. “No analytics” should not be read as “no server or network can observe a request.”
 
-## Organizer intake
+## Start Here stays in your browser
 
-Organizer intake is encrypted in the browser before submission. The server stores ciphertext and limited coarse metadata only.
+The Start Here pathfinder keeps answers in local application state. It does not create an account, write those answers to an API or database, or send them to analytics. Refreshing or leaving the flow clears that working state rather than creating a worker profile on the server.
 
-Encrypted intake is also time-bounded. Rows should expire and be purged on a schedule instead of accumulating indefinitely.
+## Encrypted organizer intake
 
-## Analytics
+If you choose to contact an organizer, the browser encrypts the freeform intake before it is submitted. The server receives the ciphertext, the public-key ID used to encrypt it, and limited routing fields: urgency, coarse region, and work type. The API rejects obvious plaintext identity or message fields.
 
-The initial release does not include Google Analytics, session replay, ad pixels, or behavioral tracking.
+The server cannot turn ciphertext into a readable message without the organizer-held private key. It can still see the coarse routing fields and ordinary network-level request information. In a small workplace or unusual situation, even coarse context may be identifying.
 
-## Operational caution
+Encrypted intake is time-bounded. New records receive an expiry date; operators are expected to soft-delete expired ciphertext and purge it after the configured grace period. Encryption reduces the value of a server compromise. Expiration reduces how long there is anything to obtain.
 
-Workers should still use personal devices, personal email, and personal phones for organizing activity whenever possible.
+## What encryption does not solve
+
+- A company-managed or compromised device may expose what you type before encryption.
+- A person with the organizer’s private key can decrypt the message.
+- Your network, browser, or device may reveal that you visited the site.
+- Details inside your message may identify you after an organizer decrypts it.
+- No technical design can promise protection from every subpoena, account compromise, or operational mistake.
+
+## Safer use
+
+When possible, use a personal device, personal account, and a network you consider appropriate for sensitive workplace activity. Do not include more identifying detail than the organizer needs to understand the situation and respond.
+
+For the implementation-level controls and known limitations, read the [Security Model](/security).

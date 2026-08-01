@@ -29,6 +29,7 @@
     "unionize": "tsx scripts/unionize-cli.ts",
     "test:mcp": "node scripts/mcp-smoke-test.mjs",
     "test:mcp:integration": "node scripts/mcp-integration-test.mjs",
+    "content:audit": "tsx scripts/audit-editorial-content.ts",
     "mcp:serve": "tsx scripts/unionize-cli.ts mcp serve"
   },
   "dependencies": {

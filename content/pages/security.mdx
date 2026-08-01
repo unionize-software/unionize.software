@@ -5,21 +5,42 @@ eyebrow: "Security"
 description: "Threats considered in V1 and the security posture for public content and encrypted intake."
 ---
 
-V1 security is built around keeping the public site useful while minimizing the value of backend compromise.
+The security goal is not to make an organizing platform invulnerable. It is to keep the public resource useful while reducing the amount and value of sensitive information the server can expose.
 
-## Deliberate limits
+## What the design protects against
 
-- No committee CRM
-- No coworker map storage
-- No intake plaintext at rest on the server
-- No service role key in client code
+The first-release threat model considers employer discovery, backend compromise, legal demands for stored records, administrator compromise, accidental logging, third-party tracking, key misconfiguration, and spam intended to exhaust organizer attention.
 
-## Intake design
+The main response is minimization:
 
-The browser encrypts the intake using an organizer public key. Only organizer-controlled private keys can decrypt the message locally.
+- no account is required to read guides or use Start Here
+- Start Here answers remain in browser state
+- no committee CRM or coworker-map storage exists
+- intake free text is encrypted before it leaves the browser
+- stored ciphertext receives an expiration date
+- the public site does not load behavioral analytics or session replay
 
-The site also publishes the active key ID and fingerprint so workers can verify key changes through a second channel. Intake requests are constrained by same-origin checks, rate limits, and payload-size caps.
+## How organizer intake works
 
-## Ongoing work
+The page obtains an organizer public key. When a worker submits the form, the browser encrypts the complete message to that key and sends ciphertext plus limited routing metadata. Decryption happens with the corresponding private key on an organizer-controlled machine; the private key is not shipped to the browser or stored in client code.
 
-Threat modeling, content review, and encryption-key handling should be revisited before any private workspace is built.
+The site publishes the active key ID and SHA-256 fingerprint together. A worker or organizer who receives the fingerprint through a trusted second channel can detect an unexpected key change. Key rotation still depends on careful operator behavior; publishing a fingerprint does not authenticate itself.
+
+The intake route also applies same-origin checks, request-size limits, schema validation, and rate limiting. These controls reduce common abuse. They are not an anonymity system and do not make a malicious client trustworthy.
+
+## Deliberate boundaries
+
+The application does not expose encrypted intake through the public CLI or MCP server. Organizer tooling works from a local intake cache, and decryption is designed to happen on the organizer’s machine.
+
+Private workspaces, shared worker maps, and chat have been deferred. Adding them would create a different risk category: durable social graphs, campaign plans, membership information, and access-control obligations. They require a new threat model, not an extra feature flag.
+
+## Known limitations
+
+- Coarse metadata can identify a person in a small or unusual workplace.
+- A compromised personal device can expose text before browser encryption.
+- A compromised organizer machine or private key can expose decrypted intake.
+- Hosting and network services can observe technical request information.
+- Retention controls require operators to run and verify the purge process.
+- Public educational content cannot replace case-specific legal or security advice.
+
+Security claims should remain testable. The repository includes the intake schema, encryption path, retention tooling, key-fingerprint utility, and written threat model for inspection.

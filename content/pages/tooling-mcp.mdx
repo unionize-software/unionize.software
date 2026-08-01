@@ -5,7 +5,7 @@ eyebrow: "MCP"
 description: "How the local MCP server exposes guide resources, prompts, and tools for agents in a way that matches the public site."
 ---
 
-The MCP server is the agent-facing layer for the public knowledge in this project.
+The MCP server gives an agent a bounded way to search, read, and route through the same public material shown on the site. It exists so an agent can cite the corpus directly instead of guessing at labor guidance from general model knowledge or scraping presentation markup.
 
 ## Quick start (local)
 
@@ -23,7 +23,7 @@ pnpm install
 pnpm mcp:serve
 ```
 
-That starts an MCP server over stdio. Your agent host (Cursor, OpenClaw, etc.) launches it and talks to it.
+That starts an MCP server over standard input and output. An MCP-capable host launches the process and exchanges protocol messages with it; the server does not open a public network port.
 
 ## Quick start (no clone)
 
@@ -48,7 +48,7 @@ If you're using Cursor, add a project MCP config at `.cursor/mcp.json` (this rep
 }
 ```
 
-## What it exposes
+## What the agent receives
 
 - `unionize://catalog`
 - `unionize://pathfinder/schema`
@@ -56,13 +56,15 @@ If you're using Cursor, add a project MCP config at `.cursor/mcp.json` (this rep
 - prompts for issue triage and first-conversation planning
 - tools for guide search, project links, and pathfinder routing
 
-## How to run it
+The catalog is the discovery surface. Guide resources are the source material. Pathfinder tools narrow a situation to relevant pages; they do not decide whether conduct is legally protected or recommend a public escalation on their own.
+
+## Run from a repository clone
 
 ```bash
 pnpm mcp:serve
 ```
 
-## How to connect it (example config)
+## Connect a host
 
 Most MCP-capable tools ask for a command + args.
 
@@ -87,6 +89,19 @@ If your tool supports `npx` configs, you can also use:
 - command: `npx`
 - args: `["-y","unionize-mcp","serve"]`
 
-## Design boundary
+## Test the connection
+
+After restarting the host, ask it to list the `unionize` resources and read `unionize://catalog`. If the catalog is unavailable, run the command directly in a terminal first; startup errors must remain on stderr so protocol output on stdout stays valid.
+
+The repository also includes smoke and integration checks:
+
+```bash
+pnpm test:mcp
+pnpm test:mcp:integration
+```
+
+## Trust boundary
 
 This MCP surface is intentionally narrow. It exposes public guide content and local routing logic. It does **not** expose encrypted intake content or any private organizer workspace.
+
+An agent using the server should preserve the limits attached to each guide: jurisdiction, legal scope, review status, and intended use. Retrieval makes a source available; it does not turn draft legal content into reviewed advice.

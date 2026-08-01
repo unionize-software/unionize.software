@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getStaticPageBySlug } from "@/lib/content/getGuides";
 import { renderMdx } from "@/lib/content/mdx";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export async function StaticPage({ slug }: { slug: string }) {
   const page = await getStaticPageBySlug(slug);
@@ -26,10 +26,7 @@ export async function StaticPage({ slug }: { slug: string }) {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>{page.title}</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6 sm:pt-7">
           <article data-prose className="max-w-none">
             {content}
           </article>
@@ -38,4 +35,3 @@ export async function StaticPage({ slug }: { slug: string }) {
     </div>
   );
 }
-
