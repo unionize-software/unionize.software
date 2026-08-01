@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 
 import { guideFrontmatterSchema } from "../content/frontmatterSchema.ts";
+import {
+  getUsStateResource,
+  searchUsStateResources,
+  stateResourceSources,
+  usStateResources,
+} from "../jurisdictions/usStates.ts";
 import { startQuestions, type StartAnswers } from "../start/questions.ts";
 
 export const websiteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://unionize.software";
@@ -846,4 +852,30 @@ export function buildPathfinderResultForAgents(answers: StartAnswers) {
       resourceUri: getGuideResourceUriFromHref(resource.href),
     })),
   };
+}
+
+function stateToAgentEntry(state: (typeof usStateResources)[number]) {
+  return {
+    ...state,
+    url: new URL(`/states/${state.code.toLowerCase()}`, websiteBaseUrl).toString(),
+    resourceUri: `unionize://states/${state.code.toLowerCase()}`,
+  };
+}
+
+export function getStateResourceCatalog(query = "") {
+  const states = searchUsStateResources(query);
+
+  return {
+    generatedAt: new Date().toISOString(),
+    lastVerified: "2026-08-01",
+    scope: "All 50 U.S. states plus the District of Columbia. Agency routes are verified; jurisdiction-specific legal interpretations remain review-gated.",
+    count: states.length,
+    sources: stateResourceSources,
+    states: states.map(stateToAgentEntry),
+  };
+}
+
+export function getStateResourceForAgents(codeOrSlug: string) {
+  const state = getUsStateResource(codeOrSlug);
+  return state ? stateToAgentEntry(state) : null;
 }

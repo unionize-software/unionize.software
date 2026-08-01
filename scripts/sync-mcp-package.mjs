@@ -12,8 +12,14 @@ const sourceMappings = [
     target: "packages/unionize-mcp/src/core.ts",
     replacements: [
       ['from "../content/frontmatterSchema.ts"', 'from "./frontmatterSchema.ts"'],
+      ['from "../jurisdictions/usStates.ts"', 'from "./usStates.ts"'],
       ['from "../start/questions.ts"', 'from "./questions.ts"'],
     ],
+  },
+  {
+    source: "lib/jurisdictions/usStates.ts",
+    target: "packages/unionize-mcp/src/usStates.ts",
+    replacements: [],
   },
   {
     source: "lib/content/contentModel.ts",

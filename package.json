@@ -32,6 +32,7 @@
     "sync:mcp-package": "node scripts/sync-mcp-package.mjs",
     "check:mcp-package": "node scripts/sync-mcp-package.mjs --check",
     "content:audit": "tsx scripts/audit-editorial-content.ts",
+    "states:audit": "node --experimental-strip-types scripts/audit-state-resources.ts",
     "mcp:serve": "tsx scripts/unionize-cli.ts mcp serve"
   },
   "dependencies": {

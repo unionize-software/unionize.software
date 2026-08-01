@@ -29,6 +29,7 @@ jobs:
       - run: pnpm check:mcp-package
       - run: pnpm exec tsc --noEmit
       - run: pnpm content:audit
+      - run: pnpm states:audit
       - run: pnpm build
       - name: Verify distributable MCP package
         working-directory: packages/unionize-mcp

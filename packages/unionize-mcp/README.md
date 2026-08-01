@@ -26,7 +26,10 @@ The server communicates over stdio. Configure an MCP host to run:
 - `unionize://catalog`
 - `unionize://pathfinder/schema`
 - `unionize://guides/<slug>`
+- `unionize://states`
+- `unionize://states/<code>`
 - guide search and local pathfinder tools
+- U.S. state worker-resource list and lookup tools
 - issue-triage and first-conversation prompts
 - public website and repository links
 

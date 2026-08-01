@@ -37,6 +37,26 @@ for (const expected of ["Review status:", "Risk level:", "Use when:", "Structure
   }
 }
 
+const stateDirectory = await client.readResource({ uri: "unionize://states" });
+const states = JSON.parse(stateDirectory?.contents?.[0]?.text ?? "{}");
+if (states.count !== 51 || states.states?.length !== 51) {
+  throw new Error(`state directory contained ${states.states?.length ?? 0} jurisdictions instead of 51`);
+}
+
+const californiaResource = await client.readResource({ uri: "unionize://states/ca" });
+const california = JSON.parse(californiaResource?.contents?.[0]?.text ?? "{}");
+if (california.code !== "CA" || california.safety?.coverage !== "state-plan-public-and-private") {
+  throw new Error("California state resource omitted its OSHA State Plan classification");
+}
+
+const stateToolResult = await client.callTool({
+  name: "get_state_resources",
+  arguments: { code: "DC" },
+});
+if (stateToolResult?.structuredContent?.kind !== "federal-district") {
+  throw new Error("get_state_resources did not identify D.C. as a federal district");
+}
+
 const pathResult = await client.callTool({
   name: "build_start_path",
   arguments: {
@@ -60,6 +80,9 @@ if (!Array.isArray(pathResult?.structuredContent?.relevantResources) || pathResu
 const linksResult = await client.callTool({ name: "project_links", arguments: {} });
 if (linksResult?.structuredContent?.githubRepositoryUrl !== "https://github.com/unionize-software/unionize.software") {
   throw new Error("project_links returned a non-canonical repository URL");
+}
+if (linksResult?.structuredContent?.stateDirectoryResource !== "unionize://states") {
+  throw new Error("project_links omitted the state directory resource");
 }
 
 await client.close();
