@@ -21,42 +21,39 @@
 }
 
 :root {
-  --font-display:
-    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "URW Palladio L", Georgia, serif;
-  --font-body:
-    "Aptos", "Segoe UI", "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
-  --font-mono:
-    "Cascadia Code", "IBM Plex Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
-  --background: #f4efe4;
-  --foreground: #111111;
-  --card: #fbf7ef;
-  --card-foreground: #111111;
-  --primary: #b32400;
-  --primary-foreground: #fff8f1;
-  --secondary: #12352c;
-  --secondary-foreground: #eff7f5;
-  --muted: #e6dccb;
-  --muted-foreground: #524a40;
-  --accent: #e9c46a;
-  --accent-foreground: #1f1a12;
-  --border: rgba(17, 17, 17, 0.18);
-  --ring: rgba(179, 36, 0, 0.5);
-  --radius: 0.45rem;
+  --font-display: "Arial Narrow", "Helvetica Neue Condensed", Impact, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --font-mono: var(--font-body);
+  --background: #f1f2ec;
+  --foreground: #10130f;
+  --card: #f8f9f4;
+  --card-foreground: #10130f;
+  --primary: #1746d1;
+  --primary-foreground: #ffffff;
+  --secondary: #10130f;
+  --secondary-foreground: #f1f2ec;
+  --muted: #d9dcd2;
+  --muted-foreground: #4e554c;
+  --accent: #d9f33d;
+  --accent-foreground: #10130f;
+  --border: rgba(16, 19, 15, 0.26);
+  --ring: rgba(23, 70, 209, 0.58);
+  --radius: 0.2rem;
 }
 
 .dark {
-  --background: #12100b;
-  --foreground: #f7f3ea;
-  --card: #1c1710;
-  --card-foreground: #f7f3ea;
-  --primary: #e85d2a;
-  --primary-foreground: #fffaf6;
-  --secondary: #20372e;
-  --secondary-foreground: #eff7f5;
-  --muted: #282117;
-  --muted-foreground: #cbbca5;
-  --accent: #f1c75e;
-  --accent-foreground: #1f1a12;
+  --background: #10130f;
+  --foreground: #f1f2ec;
+  --card: #171b16;
+  --card-foreground: #f1f2ec;
+  --primary: #6f91ff;
+  --primary-foreground: #0d1633;
+  --secondary: #f1f2ec;
+  --secondary-foreground: #10130f;
+  --muted: #252b23;
+  --muted-foreground: #b8bdb4;
+  --accent: #d9f33d;
+  --accent-foreground: #10130f;
   --border: rgba(255, 255, 255, 0.14);
   --ring: rgba(232, 93, 42, 0.55);
 }
@@ -75,8 +72,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
-  font-feature-settings: "rlig" 1, "calt" 1;
-  line-height: 1.55;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  line-height: 1.6;
 }
 
 body::before {
@@ -101,7 +98,7 @@ textarea {
 }
 
 ::selection {
-  background: rgba(233, 196, 106, 0.55);
+  background: var(--accent);
   color: var(--foreground);
 }
 
@@ -135,9 +132,7 @@ textarea {
 }
 
 .paper-panel-ink {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
-    var(--secondary);
+  background: var(--secondary);
   border-color: color-mix(in srgb, var(--secondary-foreground) 16%, transparent);
   box-shadow: none;
   color: var(--secondary-foreground);
@@ -145,12 +140,7 @@ textarea {
 }
 
 .paper-panel-ink::before {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--secondary-foreground) 20%, transparent),
-    transparent
-  );
+  background: none;
 }
 
 .interactive-card {
@@ -163,19 +153,18 @@ textarea {
 
 .interactive-card:hover,
 .interactive-card:focus-visible {
-  border-color: color-mix(in srgb, var(--primary) 22%, var(--border));
-  background-color: color-mix(in srgb, var(--card) 82%, var(--primary) 4%);
+  border-color: var(--foreground);
+  background-color: var(--card);
 }
 
 .card-action-line {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .hero-copy-shell {
@@ -183,17 +172,183 @@ textarea {
 }
 
 .eyebrow-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
 }
 
 .display-title {
   font-family: var(--font-display);
-  letter-spacing: -0.045em;
-  line-height: 0.97;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.94;
+}
+
+.field-kicker {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+}
+
+.poster-title {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 8.5vw, 9.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.82;
+  text-wrap: balance;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.6rem, 5.4vw, 6.5rem);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.86;
+  text-wrap: balance;
+}
+
+.issue-finder {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.issue-finder__intro {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.issue-finder__input {
+  width: 100%;
+  min-height: 4.2rem;
+  border: 3px solid var(--foreground);
+  border-radius: 0;
+  background: var(--background);
+  padding: 0.9rem 1rem;
+  color: var(--foreground);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.15rem);
+  font-weight: 700;
+  outline: none;
+}
+
+.issue-finder__input::placeholder {
+  color: color-mix(in srgb, var(--foreground) 54%, transparent);
+  font-weight: 400;
+}
+
+.issue-finder__input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--foreground);
+}
+
+.issue-finder__results {
+  margin-top: 1.25rem;
+  border-top: 2px solid color-mix(in srgb, var(--primary-foreground) 65%, transparent);
+}
+
+.issue-finder__result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.25rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-foreground) 42%, transparent);
+  padding: 1rem 0;
+}
+
+.issue-finder__result:hover,
+.issue-finder__result:focus-visible {
+  color: var(--accent);
+}
+
+.issue-finder__arrow {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  transition: transform 150ms ease;
+}
+
+.issue-finder__result:hover .issue-finder__arrow,
+.issue-finder__result:focus-visible .issue-finder__arrow {
+  transform: translateX(0.3rem);
+}
+
+.pathfinder-band {
+  display: grid;
+  align-items: center;
+  gap: 2rem;
+  border: 4px solid var(--foreground);
+  background: var(--accent);
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  color: var(--accent-foreground);
+}
+
+.signal-button {
+  display: inline-flex;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--foreground);
+  border-radius: 0;
+  background: var(--foreground);
+  padding: 0.75rem 1.1rem;
+  color: var(--background);
+  font-weight: 800;
+}
+
+.signal-button:hover,
+.signal-button:focus-visible {
+  background: transparent;
+  color: var(--foreground);
+}
+
+.guide-index {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.guide-index__item {
+  position: relative;
+  display: block;
+  border-top: 4px solid var(--foreground);
+  padding: 1.25rem 3.5rem 0 0;
+}
+
+.guide-index__item:hover,
+.guide-index__item:focus-visible {
+  border-top-color: var(--primary);
+}
+
+.guide-index__arrow {
+  position: absolute;
+  top: 0.9rem;
+  right: 0;
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+  transition: transform 150ms ease;
+}
+
+.guide-index__item:hover .guide-index__arrow,
+.guide-index__item:focus-visible .guide-index__arrow {
+  transform: translateX(0.35rem);
+}
+
+.standards-block {
+  display: grid;
+  gap: 3rem;
+  background: var(--secondary);
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  color: var(--secondary-foreground);
+}
+
+.standards-block__tooling {
+  border-top: 1px solid color-mix(in srgb, var(--secondary-foreground) 30%, transparent);
+  padding-top: 1.25rem;
+  color: color-mix(in srgb, var(--secondary-foreground) 72%, transparent);
 }
 
 .text-link {
@@ -393,6 +548,31 @@ textarea {
   }
 }
 
+@media (min-width: 768px) {
+  .issue-finder__intro {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .guide-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .pathfinder-band {
+    grid-template-columns: 0.82fr 1.12fr auto;
+  }
+
+  .standards-block {
+    grid-template-columns: 0.72fr 1.28fr;
+  }
+
+  .standards-block__tooling {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 640px) {
   body {
     background: var(--background);
@@ -409,5 +589,13 @@ textarea {
   .hero-copy-shell {
     border-top: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
     padding-top: 1rem;
+  }
+
+  .issue-finder {
+    margin-inline: -1px;
+  }
+
+  .issue-finder__result {
+    padding-block: 1rem;
   }
 }

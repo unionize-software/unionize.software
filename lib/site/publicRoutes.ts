@@ -7,11 +7,10 @@ export type NavItem = {
 
 export const primaryNavItems = [
   { href: "/resources", label: "Guides" },
+  { href: "/know-your-rights", label: "Rights" },
+  { href: "/organize", label: "Organize" },
   { href: "/resources/safety-basics", label: "Safety" },
-  { href: "/know-your-rights", label: "Your rights" },
-  { href: "/paths", label: "Reading paths" },
   { href: "/evidence", label: "Evidence" },
-  { href: "/game-workers", label: "Game workers" },
   { href: "/start", label: "Pathfinder" },
 ] as const satisfies ReadonlyArray<NavItem>;
 

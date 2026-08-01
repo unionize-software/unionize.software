@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import type { Route } from "next";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { primaryNavItems } from "@/lib/site/publicRoutes";
@@ -11,32 +11,34 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-foreground/20 bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="group min-w-0">
-            <p className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-[-0.045em] sm:text-[1.7rem]">
-              unionize<span className="text-primary">.</span>software
-            </p>
-            <p className="mt-0.5 text-xs font-medium text-muted-foreground sm:text-sm">
-              A worker-built organizing field guide
+    <header className="border-b-4 border-foreground bg-background">
+      <div className="mx-auto max-w-[86rem] px-4 sm:px-6 lg:px-10">
+        <div className="grid gap-5 py-5 sm:py-7 lg:grid-cols-[1fr_auto] lg:items-end">
+          <Link href="/" className="group w-fit">
+            <p className="font-[family-name:var(--font-display)] text-[3.25rem] uppercase leading-[0.82] tracking-[-0.025em] sm:text-[4.4rem]">
+              Unionize<span className="text-primary">.</span>software
             </p>
           </Link>
+          <div className="max-w-sm border-l-4 border-primary pl-4 text-sm leading-6 text-muted-foreground lg:text-right">
+            <p className="font-bold text-foreground">Independent worker field guide</p>
+            <p>Free. Public. No account required.</p>
+          </div>
         </div>
 
-        <nav className="flex flex-wrap gap-x-4 gap-y-2 border-t border-foreground/15 pt-3 sm:gap-x-5 lg:border-t-0 lg:pt-0">
+        <nav
+          aria-label="Primary navigation"
+          className="grid grid-cols-3 gap-x-4 gap-y-2 border-t border-foreground/30 py-3 sm:flex sm:gap-x-6"
+        >
           {primaryNavItems.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const active = pathname === item.href || pathname.startsWith(item.href + "/");
 
             return (
               <Link
                 key={item.href}
                 href={item.href as Route}
                 className={cn(
-                  "relative pb-1 text-[0.9rem] font-medium tracking-[-0.01em] text-muted-foreground after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform hover:text-foreground hover:after:scale-x-100 sm:text-[0.95rem]",
-                  active
-                    ? "text-foreground after:scale-x-100"
-                    : "",
+                  "w-fit border-b-2 border-transparent pb-1 text-sm font-bold text-muted-foreground hover:border-primary hover:text-foreground",
+                  active ? "border-primary text-foreground" : "",
                 )}
               >
                 {item.label}
