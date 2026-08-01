@@ -38,6 +38,13 @@ const templatedPatterns = [
   { name: "two-things-true", expression: /\btwo things can be true\b/gi },
 ] as const;
 
+const deprecatedSourceUrls = new Map([
+  [
+    "https://www.nlrb.gov/news-outreach/news-story/nlrb-general-counsel-issues-memo-on-unlawful-electronic-surveillance-and",
+    "GC Memo 23-02 was rescinded by GC 25-05 on 2025-02-14; cite the rescission and current, narrower authority instead.",
+  ],
+]);
+
 function countWords(value: string) {
   return value
     .replace(/```[\s\S]*?```/g, " ")
@@ -123,9 +130,38 @@ function inspectRecord(record: ContentRecord, knownSlugs: Set<string>) {
 
     const sourceStatus = String(record.data.source_status ?? "");
     const sources = Array.isArray(record.data.sources) ? record.data.sources : [];
-    const hasBodySources = /^##\s+Sources\s*$/im.test(record.body);
-    if ((sourceStatus === "mixed" || sourceStatus === "source-backed") && sources.length === 0 && !hasBodySources) {
-      add("error", "missing-sources", `${sourceStatus} guide has neither structured sources nor a Sources section.`);
+    const bodyUrls = [...record.body.matchAll(/\]\((https?:\/\/[^)]+)\)/g)].map((match) => match[1]);
+    if ((sourceStatus === "mixed" || sourceStatus === "source-backed") && sources.length === 0) {
+      add("error", "missing-structured-sources", `${sourceStatus} guide has no structured sources metadata.`);
+    }
+    if ((sourceStatus === "mixed" || sourceStatus === "source-backed") && bodyUrls.length === 0) {
+      add("warning", "unplaced-sources", `${sourceStatus} guide has no in-context external citation in the body.`);
+    }
+
+    for (const source of sources) {
+      if (!source || typeof source !== "object") continue;
+      const url = String((source as Record<string, unknown>).url ?? "");
+      const note = String((source as Record<string, unknown>).note ?? "");
+      if (!note) {
+        add("warning", "unexplained-source", `Structured source has no note explaining which claim it supports: ${url || "unknown URL"}`);
+      }
+    }
+
+    const citedUrls = new Set([
+      ...bodyUrls,
+      ...sources
+        .map((source) =>
+          source && typeof source === "object"
+            ? String((source as Record<string, unknown>).url ?? "")
+            : "",
+        )
+        .filter(Boolean),
+    ]);
+    for (const url of citedUrls) {
+      const reason = deprecatedSourceUrls.get(url);
+      if (reason) {
+        add("error", "deprecated-source", `${url}: ${reason}`);
+      }
     }
 
     const related = Array.isArray(record.data.related_slugs) ? record.data.related_slugs : [];

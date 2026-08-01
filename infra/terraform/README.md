@@ -4,7 +4,7 @@ This folder contains Terraform configuration to host:
 
 - `www.unionize.software`: static site on S3 + CloudFront
 - `unionize.software`: redirect to `www`
-- `api.unionize.software`: intake API on API Gateway + Lambda + WAF
+- `api.unionize.software`: intake API on API Gateway + Lambda with stage-level request throttling
 - Encrypted intake storage on DynamoDB (metadata + TTL) + optional S3 (ciphertext blob)
 
 ### Layout
@@ -34,3 +34,4 @@ terraform apply
 
 - The bootstrap stack uses local state by default. After the bucket/table exist, the `main` stack uses the remote backend.
 - Certificates for CloudFront must be in `us-east-1`.
+- API Gateway throttling is a capacity and abuse-control layer, not a per-person identity control or an anonymity guarantee. Self-hosted deployments need equivalent controls at their own network boundary.
