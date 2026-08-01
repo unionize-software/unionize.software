@@ -5,13 +5,15 @@ import { footerNavItems } from "@/lib/site/publicRoutes";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/70 bg-[linear-gradient(180deg,rgba(251,247,239,0.88),rgba(251,247,239,0.72))]">
+    <footer className="border-t border-foreground/25 bg-background">
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
         <div className="space-y-3">
-          <p className="eyebrow-label text-primary">unionize.software</p>
+          <p className="font-[family-name:var(--font-display)] text-2xl font-semibold tracking-[-0.04em]">
+            unionize<span className="text-primary">.</span>software
+          </p>
           <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-            Public educational resources for software and game workers. Useful knowledge first,
-            more platform complexity later.
+            A free, privacy-first field guide for software and game workers trying to understand a
+            workplace problem and decide what to do next.
           </p>
           <a
             href="https://github.com/unionize-software/unionize-software-webapp"

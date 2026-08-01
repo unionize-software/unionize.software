@@ -25,3 +25,4 @@ infra/lambda/intake/dist
 infra/lambda/intake/dist.zip
 infra/terraform/*/.terraform
 out/
+.lazyweb/

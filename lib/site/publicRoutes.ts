@@ -6,13 +6,13 @@ export type NavItem = {
 };
 
 export const primaryNavItems = [
-  { href: "/start", label: "Start Here" },
+  { href: "/resources", label: "Guides" },
   { href: "/resources/safety-basics", label: "Safety" },
-  { href: "/paths", label: "Paths" },
-  { href: "/resources", label: "Wiki" },
-  { href: "/know-your-rights", label: "Rights" },
+  { href: "/know-your-rights", label: "Your rights" },
+  { href: "/paths", label: "Reading paths" },
   { href: "/evidence", label: "Evidence" },
-  { href: "/game-workers", label: "Game Workers" },
+  { href: "/game-workers", label: "Game workers" },
+  { href: "/start", label: "Pathfinder" },
 ] as const satisfies ReadonlyArray<NavItem>;
 
 export const footerNavItems = [

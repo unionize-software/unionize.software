@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | unionize.software",
   },
   description:
-    "Privacy-first public resources and decision routing for software and game workers organizing around surveillance, layoffs, pay, and working conditions.",
+    "A free, privacy-first field guide for software and game workers facing surveillance, layoffs, pay problems, burnout, retaliation, and other workplace issues.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://unionize.software"),
 };
 
