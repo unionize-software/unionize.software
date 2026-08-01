@@ -1,4 +1,4 @@
-import { startServer } from "./server";
+import { startUnionizeMcpServer } from "./server.ts";
 
 function printHelp() {
   // Keep this minimal: most hosts just need `serve`.
@@ -19,7 +19,7 @@ async function run() {
   const command = args.shift();
 
   if (!command || command === "serve") {
-    await startServer();
+    await startUnionizeMcpServer();
     return;
   }
 

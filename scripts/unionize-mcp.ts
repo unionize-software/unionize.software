@@ -14,17 +14,28 @@ import {
 } from "../lib/agent/unionize.ts";
 
 function buildGuideMarkdown(guide: NonNullable<Awaited<ReturnType<typeof getGuideForAgents>>>) {
+  const sourceLines = guide.sources.flatMap((source) => [
+    `- [${source.title}](${source.url}) — ${source.publisher} (${source.kind})`,
+    source.note ? `  - ${source.note}` : null,
+  ]).filter((line): line is string => Boolean(line));
+
   return [
     `# ${guide.title}`,
     "",
     `- Category: ${guide.category}`,
     `- Jurisdiction: ${guide.jurisdiction}`,
     `- Last reviewed: ${guide.lastReviewed}`,
+    `- Review status: ${guide.reviewStatus}`,
+    `- Risk level: ${guide.riskLevel}`,
+    `- Source footing: ${guide.sourceStatus}`,
     `- Legal scope: ${guide.legalScope}`,
+    `- Use when: ${guide.whenToUse}`,
+    `- Not for: ${guide.notFor}`,
     `- Web URL: ${guide.url}`,
     `- Resource URI: ${guide.resourceUri}`,
     "",
     guide.body.trim(),
+    ...(sourceLines.length > 0 ? ["", "## Structured sources", "", ...sourceLines] : []),
     "",
   ].join("\n");
 }

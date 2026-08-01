@@ -1,0 +1,32 @@
+name: Content correction
+description: Suggest a sourced correction or clarify a guide boundary.
+title: "[Content]: "
+labels: [content]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or guide
+      description: Provide a public URL or repository path.
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Claim or passage
+      description: Identify the passage without including a private workplace story.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary sources
+      description: Link official law, agency guidance, research, or other authoritative material.
+    validations:
+      required: true

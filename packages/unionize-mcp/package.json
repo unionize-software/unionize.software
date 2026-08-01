@@ -4,7 +4,7 @@
   "private": false,
   "type": "module",
   "description": "unionize.software MCP server (stdio) for guide corpus + pathfinder logic.",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
     "url": "https://github.com/unionize-software/unionize.software.git",
@@ -20,6 +20,8 @@
     "bin/",
     "src/",
     "content/",
+    "LICENSE",
+    "CONTENT_LICENSE.md",
     "README.md"
   ],
   "dependencies": {

@@ -8,9 +8,9 @@ resource "aws_iam_role" "intake_lambda" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = { Service = "lambda.amazonaws.com" }
-        Action = "sts:AssumeRole"
+        Action    = "sts:AssumeRole"
       }
     ]
   })
@@ -18,7 +18,7 @@ resource "aws_iam_role" "intake_lambda" {
 
 resource "aws_iam_role_policy_attachment" "intake_lambda_basic" {
   role       = aws_iam_role.intake_lambda.name
-  policy_arn  = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_policy" "intake_storage" {
@@ -27,13 +27,13 @@ resource "aws_iam_policy" "intake_storage" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Action = ["dynamodb:PutItem"]
+        Effect   = "Allow"
+        Action   = ["dynamodb:PutItem"]
         Resource = aws_dynamodb_table.intakes.arn
       },
       {
-        Effect = "Allow"
-        Action = ["s3:PutObject"]
+        Effect   = "Allow"
+        Action   = ["s3:PutObject"]
         Resource = "${aws_s3_bucket.ciphertext.arn}/*"
       }
     ]
@@ -41,7 +41,7 @@ resource "aws_iam_policy" "intake_storage" {
 }
 
 resource "aws_iam_role_policy_attachment" "intake_storage" {
-  role      = aws_iam_role.intake_lambda.name
+  role       = aws_iam_role.intake_lambda.name
   policy_arn = aws_iam_policy.intake_storage.arn
 }
 
@@ -54,17 +54,17 @@ resource "aws_lambda_function" "intake" {
   filename         = "${path.module}/../../lambda/intake/dist.zip"
   source_code_hash = filebase64sha256("${path.module}/../../lambda/intake/dist.zip")
 
-  timeout = 10
+  timeout     = 10
   memory_size = 256
 
   environment {
     variables = {
-      INTAKE_TABLE_NAME         = aws_dynamodb_table.intakes.name
-      CIPHERTEXT_BUCKET_NAME    = aws_s3_bucket.ciphertext.bucket
-      ALLOWED_ORIGINS           = "https://${var.domain_www}"
-      INTAKE_TTL_DAYS           = "30"
-      CONFIGURED_PUBLIC_KEY_ID  = var.intake_public_key_id
-      MAX_INTAKE_REQUEST_BYTES  = "16384"
+      INTAKE_TABLE_NAME        = aws_dynamodb_table.intakes.name
+      CIPHERTEXT_BUCKET_NAME   = aws_s3_bucket.ciphertext.bucket
+      ALLOWED_ORIGINS          = "https://${var.domain_www}"
+      INTAKE_TTL_DAYS          = "30"
+      CONFIGURED_PUBLIC_KEY_ID = var.intake_public_key_id
+      MAX_INTAKE_REQUEST_BYTES = "16384"
     }
   }
 }

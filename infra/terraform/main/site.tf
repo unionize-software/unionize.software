@@ -71,10 +71,10 @@ resource "aws_acm_certificate_validation" "www" {
 }
 
 resource "aws_cloudfront_distribution" "www" {
-  enabled         = true
-  is_ipv6_enabled = true
-  comment         = "unionize.software static site (www)"
-  aliases         = [var.domain_www]
+  enabled             = true
+  is_ipv6_enabled     = true
+  comment             = "unionize.software static site (www)"
+  aliases             = [var.domain_www]
   default_root_object = "index.html"
 
   origin {

@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:mcp-package
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm content:audit
+      - run: pnpm build
+      - name: Verify distributable MCP package
+        working-directory: packages/unionize-mcp
+        run: npm pack --dry-run
+
+  mcp:
+    name: MCP integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:mcp-package
+      - run: pnpm test:mcp
+      - run: pnpm test:mcp:integration
+
+  browser:
+    name: Browser tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test
+        env:
+          PLAYWRIGHT_SKIP_LIVE_INTAKE: "1"
+
+  infrastructure:
+    name: Infrastructure
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: validation-only
+      AWS_SECRET_ACCESS_KEY: validation-only
+      TF_VAR_skip_aws_credentials_validation: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform formatting
+        run: terraform fmt -check -recursive infra/terraform
+      - name: Validate bootstrap configuration
+        run: terraform -chdir=infra/terraform/bootstrap init -backend=false && terraform -chdir=infra/terraform/bootstrap validate
+      - name: Validate main configuration
+        run: terraform -chdir=infra/terraform/main init -backend=false && terraform -chdir=infra/terraform/main validate
+      - name: Validate Docker Compose
+        run: docker compose config --quiet

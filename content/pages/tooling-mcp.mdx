@@ -17,21 +17,17 @@ Prereqs:
 Install and run (repo clone):
 
 ```bash
-git clone https://github.com/unionize-software/unionize-software-webapp.git
-cd unionize-software-webapp
+git clone https://github.com/unionize-software/unionize.software.git
+cd unionize.software
 pnpm install
 pnpm mcp:serve
 ```
 
 That starts an MCP server over standard input and output. An MCP-capable host launches the process and exchanges protocol messages with it; the server does not open a public network port.
 
-## Quick start (no clone)
+## Package status
 
-If you just want to run it without cloning, you can use `npx`:
-
-```bash
-npx -y unionize-mcp serve
-```
+The standalone `unionize-mcp` package is prepared for a public npm release but is not published yet. Until a release is visible on npm, use the repository-based command above. The site does not advertise an `npx` command that the public registry cannot resolve.
 
 ## Cursor setup (project)
 
@@ -80,14 +76,11 @@ Example (JSON):
 {
   "command": "node",
   "args": ["./bin/unionize-software.mjs", "mcp", "serve"],
-  "cwd": "/absolute/path/to/unionize-software-webapp"
+  "cwd": "/absolute/path/to/unionize.software"
 }
 ```
 
-If your tool supports `npx` configs, you can also use:
-
-- command: `npx`
-- args: `["-y","unionize-mcp","serve"]`
+After the package is published, release notes will provide the exact registry command and version. Pin that version in long-lived agent configurations instead of installing an unbounded latest release.
 
 ## Test the connection
 

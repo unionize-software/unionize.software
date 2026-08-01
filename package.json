@@ -10,7 +10,7 @@
   "packageManager": "pnpm@10.19.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unionize-software/unionize-software-webapp.git"
+    "url": "https://github.com/unionize-software/unionize.software.git"
   },
   "homepage": "https://unionize.software",
   "engines": {
@@ -29,6 +29,8 @@
     "unionize": "tsx scripts/unionize-cli.ts",
     "test:mcp": "node scripts/mcp-smoke-test.mjs",
     "test:mcp:integration": "node scripts/mcp-integration-test.mjs",
+    "sync:mcp-package": "node scripts/sync-mcp-package.mjs",
+    "check:mcp-package": "node scripts/sync-mcp-package.mjs --check",
     "content:audit": "tsx scripts/audit-editorial-content.ts",
     "mcp:serve": "tsx scripts/unionize-cli.ts mcp serve"
   },

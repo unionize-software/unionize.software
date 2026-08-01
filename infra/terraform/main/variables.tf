@@ -45,3 +45,9 @@ variable "intake_public_key_id" {
   description = "Lambda rejects public_key_id mismatches (same as NEXT_PUBLIC_INTAKE_PUBLIC_KEY_ID). Override per env via tfvars."
   default     = "default-2026-04"
 }
+
+variable "skip_aws_credentials_validation" {
+  type        = bool
+  description = "Skip AWS credential and account checks for configuration-only CI validation. Leave false for plans and applies."
+  default     = false
+}

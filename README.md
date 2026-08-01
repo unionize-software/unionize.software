@@ -71,12 +71,12 @@ This repo includes a starter skill at [`skills/unionize-organizing/SKILL.md`](sk
 Local MCP registration example:
 
 ```bash
-openclaw mcp set unionize "{\"command\":\"node\",\"args\":[\"./bin/unionize-software.mjs\",\"mcp\",\"serve\"],\"cwd\":\"/absolute/path/to/unionize-software-webapp\"}"
+openclaw mcp set unionize "{\"command\":\"node\",\"args\":[\"./bin/unionize-software.mjs\",\"mcp\",\"serve\"],\"cwd\":\"/absolute/path/to/unionize.software\"}"
 ```
 
-Planned public source repository:
+Public source repository:
 
-- `https://github.com/unionize-software/unionize-software-webapp`
+- `https://github.com/unionize-software/unionize.software`
 
 ## Testing
 
@@ -172,3 +172,11 @@ The private key must remain on an organizer-controlled machine and must never be
 - See [`docs/KEY_MANAGEMENT.md`](docs/KEY_MANAGEMENT.md) for rotation, revocation, and backup handling.
 
 By default, encrypted intake rows are marked to expire after `30` days and should be purged `7` days after soft-delete.
+
+## Licensing
+
+- Source code outside `content/` is licensed under AGPL-3.0-or-later. See [LICENSE](LICENSE).
+- Original written material in `content/` is licensed under CC BY-SA 4.0. See [CONTENT_LICENSE.md](CONTENT_LICENSE.md).
+- Third-party dependencies, fonts, and referenced source material retain their own licenses and attribution requirements.
+
+Contributions are accepted under the license that applies to the part of the repository being changed.
