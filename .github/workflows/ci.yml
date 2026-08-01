@@ -79,6 +79,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
+      - name: Build Lambda deployment package
+        run: bash infra/lambda/intake/build.sh
       - name: Terraform formatting
         run: terraform fmt -check -recursive infra/terraform
       - name: Validate bootstrap configuration

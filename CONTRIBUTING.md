@@ -32,12 +32,13 @@ PLAYWRIGHT_SKIP_LIVE_INTAKE=1 pnpm test
 pnpm test:mcp
 pnpm test:mcp:integration
 terraform fmt -check -recursive infra/terraform
+bash infra/lambda/intake/build.sh
 terraform -chdir=infra/terraform/bootstrap validate
 terraform -chdir=infra/terraform/main validate
 docker compose config --quiet
 ```
 
-On PowerShell, set the Playwright variable with `$env:PLAYWRIGHT_SKIP_LIVE_INTAKE='1'` before running `pnpm test`.
+On PowerShell, set the Playwright variable with `$env:PLAYWRIGHT_SKIP_LIVE_INTAKE='1'` before running `pnpm test`, and use `./infra/lambda/intake/build.ps1` instead of the shell Lambda build script.
 
 ## Content changes
 
