@@ -76,20 +76,81 @@ openclaw mcp set unionize "{\"command\":\"node\",\"args\":[\"./bin/unionize-soft
 
 Planned public source repository:
 
-- https://github.com/unionize-software/unionize-software-webapp
+- `https://github.com/unionize-software/unionize-software-webapp`
+
+## Testing
+
+- `pnpm test` runs Playwright against a static build (`out/`) served locally (`next start` does not support `output: "export"`).
+- Four tests POST to the **deployed** intake API (`https://api.unionize.software/intake` by default). They **auto-skip** when that host is unreachable (no DNS / not deployed). To skip them without probing, set `PLAYWRIGHT_SKIP_LIVE_INTAKE=1`. Override the URL with `PLAYWRIGHT_INTAKE_URL`.
+
+## Local Intake Dashboard (organizers only)
+
+The CLI can run a **localhost-only** dashboard that reads the local intake cache at `~/.unionize/intakes.sqlite`.
+
+Workflow:
+
+1. Sync from AWS into the local DB:
+
+```bash
+AWS_REGION=us-east-1 INTAKE_TABLE_NAME="..." CIPHERTEXT_BUCKET_NAME="..." node bin/unionize-software.mjs intake sync
+```
+
+1. Start the local dashboard:
+
+```bash
+node bin/unionize-software.mjs intake dashboard --port 4317
+```
+
+If you want the dashboard to support **decrypt on demand**, pass the private key path:
+
+```bash
+node bin/unionize-software.mjs intake dashboard --port 4317 --private-key ./keys/organizer-private.key
+```
+
+The private key is never stored in the database; it stays on the organizer machine.
+
+## Self-host (Docker Compose)
+
+For non-AWS self-hosting (single box), `docker-compose.yml` runs:
+
+- `site`: serves the static export in `out/` at `http://localhost:3000`
+- `intake_api`: accepts encrypted POSTs at `http://localhost:3010/intake` and stores to `./data/selfhost/`
+
+Steps:
+
+```bash
+pnpm build
+docker compose up --build
+```
+
+Then set the site build-time env:
+
+- `NEXT_PUBLIC_INTAKE_API_URL="http://localhost:3010/intake"`
+
+If you also want the organizer dashboard to read self-hosted intakes, import them into the same local cache:
+
+```bash
+node bin/unionize-software.mjs intake import-selfhost --data-dir ./data/selfhost
+node bin/unionize-software.mjs intake dashboard --port 4317
+```
 
 ## AWS Amplify
 
-The repo now includes [amplify.yml](amplify.yml) for Amplify Hosting.
+The repo includes [amplify.yml](amplify.yml) for Amplify Hosting.
 
 It assumes:
 
-- a standard single-app Next.js deployment
 - `pnpm` installed during the Amplify `preBuild` phase
-- `pnpm build` as the build command
-- `.next` as the artifact `baseDirectory`
+- `pnpm build` (Next.js with `output: "export"`) as the build command
+- `out` as the artifact `baseDirectory` (static HTML/CSS/JS)
 
-Before deploying, set the required environment variables in Amplify for the branch you are shipping, especially the public intake key values and any server-side Supabase credentials the app needs at runtime.
+Before deploying, set branch environment variables, especially:
+
+- `NEXT_PUBLIC_INTAKE_API_URL` (full URL, e.g. `https://api.unionize.software/intake`)
+- public intake key fields (`NEXT_PUBLIC_INTAKE_PUBLIC_KEY_*`)
+- any Supabase client credentials the app still needs at build/runtime
+
+**CSP:** `headers()` in [next.config.ts](next.config.ts) are not applied for static export; enforce CSP in production via **CloudFront response headers policy** (or equivalent) if you need the same guarantees as the dev server.
 
 ## Local Intake Decryption
 

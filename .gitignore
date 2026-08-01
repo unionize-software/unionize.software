@@ -13,7 +13,15 @@ coverage
 .env.development.local
 .env.test.local
 .env.production.local
+*.tfstate
+*.tfstate.*
+.terraform/
 pagefind
 public/search/resources-index.json
 *.tsbuildinfo
 _tmp_*
+infra/lambda/intake/node_modules
+infra/lambda/intake/dist
+infra/lambda/intake/dist.zip
+infra/terraform/*/.terraform
+out/

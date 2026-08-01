@@ -1,3 +1,4 @@
+import { lookup } from "node:dns/promises";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -9,10 +10,16 @@ import {
 } from "@/lib/intake/config";
 import { takeRateLimit } from "@/lib/security/rateLimit";
 
+const intakePostUrl =
+  process.env.PLAYWRIGHT_INTAKE_URL ?? "https://api.unionize.software/intake";
+
+/** Lambda CORS allowlist is the live www origin, not the Playwright dev server. */
+const intakeAllowedOrigin = "https://www.unionize.software";
+
 function buildValidApiPayload() {
   return {
     ciphertext: "c".repeat(256),
-    public_key_id: "test-2026-04",
+    public_key_id: "default-2026-04",
     urgency: "low",
     coarse_region: "California",
     work_type: "game dev",
@@ -22,7 +29,7 @@ function buildValidApiPayload() {
 test("intake request contains ciphertext and no plaintext fields", async ({ page }) => {
   let requestBody: Record<string, unknown> | null = null;
 
-  await page.route("**/api/intake", async (route) => {
+  await page.route("**/intake", async (route) => {
     requestBody = route.request().postDataJSON() as Record<string, unknown>;
     await route.fulfill({
       status: 201,
@@ -62,64 +69,100 @@ test("intake request contains ciphertext and no plaintext fields", async ({ page
   await expect(page.getByText(/Ciphertext expiry target/i)).toBeVisible();
 });
 
-test("intake API rejects plaintext pii keys", async ({ request, baseURL }) => {
-  const response = await request.post(`${baseURL}/api/intake`, {
-    headers: {
-      Origin: baseURL!,
-      "x-forwarded-for": "198.51.100.10",
-    },
-    data: {
-      name: "Alex",
-      email: "alex@example.com",
-      ciphertext: "ciphertext",
-      public_key_id: "test-2026-04",
-      urgency: "low",
-    },
+test.describe("intake API (deployed)", () => {
+  let deployedIntakeReachable = false;
+
+  test.beforeAll(async () => {
+    if (process.env.PLAYWRIGHT_SKIP_LIVE_INTAKE === "1") {
+      deployedIntakeReachable = false;
+      return;
+    }
+    try {
+      const host = new URL(intakePostUrl).hostname;
+      await lookup(host);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      try {
+        const preflight = await fetch(intakePostUrl, {
+          method: "OPTIONS",
+          headers: { Origin: intakeAllowedOrigin },
+          signal: controller.signal,
+        });
+        deployedIntakeReachable = preflight.status === 204 || preflight.status === 403;
+      } finally {
+        clearTimeout(timeout);
+      }
+    } catch {
+      deployedIntakeReachable = false;
+    }
   });
 
-  expect(response.status()).toBe(400);
-});
-
-test("intake API rejects requests from the wrong origin", async ({ request, baseURL }) => {
-  const response = await request.post(`${baseURL}/api/intake`, {
-    headers: {
-      Origin: "https://example.com",
-      "x-forwarded-for": "198.51.100.11",
-    },
-    data: buildValidApiPayload(),
+  test.beforeEach(() => {
+    test.skip(
+      !deployedIntakeReachable,
+      `Skipped: intake API not reachable at ${intakePostUrl} (deploy Terraform + DNS, or set PLAYWRIGHT_SKIP_LIVE_INTAKE=1).`,
+    );
   });
 
-  expect(response.status()).toBe(403);
-});
+  test("intake API rejects plaintext pii keys", async ({ request }) => {
+    const response = await request.post(intakePostUrl, {
+      headers: {
+        Origin: intakeAllowedOrigin,
+        "x-forwarded-for": "198.51.100.10",
+      },
+      data: {
+        name: "Alex",
+        email: "alex@example.com",
+        ciphertext: "ciphertext",
+        public_key_id: "default-2026-04",
+        urgency: "low",
+      },
+    });
 
-test("intake API rejects unknown public key ids", async ({ request, baseURL }) => {
-  const response = await request.post(`${baseURL}/api/intake`, {
-    headers: {
-      Origin: baseURL!,
-      "x-forwarded-for": "198.51.100.12",
-    },
-    data: {
-      ...buildValidApiPayload(),
-      public_key_id: "wrong-key-id",
-    },
+    expect(response.status()).toBe(400);
   });
 
-  expect(response.status()).toBe(400);
-});
+  test("intake API rejects requests from the wrong origin", async ({ request }) => {
+    const response = await request.post(intakePostUrl, {
+      headers: {
+        Origin: "https://example.com",
+        "x-forwarded-for": "198.51.100.11",
+      },
+      data: buildValidApiPayload(),
+    });
 
-test("intake API rejects oversized encrypted payloads", async ({ request, baseURL }) => {
-  const response = await request.post(`${baseURL}/api/intake`, {
-    headers: {
-      Origin: baseURL!,
-      "x-forwarded-for": "198.51.100.13",
-    },
-    data: {
-      ...buildValidApiPayload(),
-      ciphertext: "x".repeat(20_000),
-    },
+    expect(response.status()).toBe(403);
   });
 
-  expect(response.status()).toBe(413);
+  test("intake API rejects unknown public key ids", async ({ request }) => {
+    const response = await request.post(intakePostUrl, {
+      headers: {
+        Origin: intakeAllowedOrigin,
+        "x-forwarded-for": "198.51.100.12",
+      },
+      data: {
+        ...buildValidApiPayload(),
+        public_key_id: "wrong-key-id",
+      },
+    });
+
+    expect(response.status()).toBe(400);
+  });
+
+  test("intake API rejects oversized encrypted payloads", async ({ request }) => {
+    const response = await request.post(intakePostUrl, {
+      headers: {
+        Origin: intakeAllowedOrigin,
+        "x-forwarded-for": "198.51.100.13",
+      },
+      data: {
+        ...buildValidApiPayload(),
+        ciphertext: "x".repeat(20_000),
+      },
+    });
+
+    expect(response.status()).toBe(413);
+  });
 });
 
 test("rate limiter blocks repeated attempts within the window", async () => {

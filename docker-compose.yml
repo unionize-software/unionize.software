@@ -1,0 +1,26 @@
+services:
+  site:
+    image: node:22-slim
+    working_dir: /app
+    command: ["sh", "-lc", "npx --yes serve@14 out --no-port-switching --listen tcp://0.0.0.0:3000"]
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./out:/app/out:ro
+    restart: unless-stopped
+
+  intake_api:
+    build:
+      context: .
+      dockerfile: infra/selfhost/intake-api/Dockerfile
+    environment:
+      ALLOWED_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+      INTAKE_TTL_DAYS: "30"
+      MAX_INTAKE_REQUEST_BYTES: "16384"
+      # Set this in production-like self-hosting to enforce key id.
+      # CONFIGURED_PUBLIC_KEY_ID: "default-2026-04"
+    ports:
+      - "3010:3010"
+    volumes:
+      - ./data/selfhost:/data
+    restart: unless-stopped

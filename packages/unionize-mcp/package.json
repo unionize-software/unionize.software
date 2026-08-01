@@ -1,0 +1,35 @@
+{
+  "name": "unionize-mcp",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "unionize.software MCP server (stdio) for guide corpus + pathfinder logic.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unionize-software/unionize.software.git",
+    "directory": "packages/unionize-mcp"
+  },
+  "bin": {
+    "unionize-mcp": "./bin/unionize-mcp.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "content/",
+    "README.md"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "gray-matter": "^4.0.3",
+    "tsx": "^4.21.0",
+    "zod": "^4.1.5"
+  },
+  "mcpName": "io.github.unionize-software/unionize-mcp",
+  "engines": {
+    "node": ">=22 <25"
+  }
+}

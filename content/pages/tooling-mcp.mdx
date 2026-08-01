@@ -7,6 +7,47 @@ description: "How the local MCP server exposes guide resources, prompts, and too
 
 The MCP server is the agent-facing layer for the public knowledge in this project.
 
+## Quick start (local)
+
+Prereqs:
+
+- Node `22+`
+- `pnpm`
+
+Install and run (repo clone):
+
+```bash
+git clone https://github.com/unionize-software/unionize-software-webapp.git
+cd unionize-software-webapp
+pnpm install
+pnpm mcp:serve
+```
+
+That starts an MCP server over stdio. Your agent host (Cursor, OpenClaw, etc.) launches it and talks to it.
+
+## Quick start (no clone)
+
+If you just want to run it without cloning, you can use `npx`:
+
+```bash
+npx -y unionize-mcp serve
+```
+
+## Cursor setup (project)
+
+If you're using Cursor, add a project MCP config at `.cursor/mcp.json` (this repo ships a starting template at `.cursor/mcp.json.example`):
+
+```json
+{
+  "mcpServers": {
+    "unionize": {
+      "command": "npx",
+      "args": ["-y", "unionize-mcp", "serve"]
+    }
+  }
+}
+```
+
 ## What it exposes
 
 - `unionize://catalog`
@@ -20,6 +61,31 @@ The MCP server is the agent-facing layer for the public knowledge in this projec
 ```bash
 pnpm mcp:serve
 ```
+
+## How to connect it (example config)
+
+Most MCP-capable tools ask for a command + args.
+
+Use (repo clone):
+
+- command: `node`
+- args: `["./bin/unionize-software.mjs","mcp","serve"]`
+- cwd: the repo directory
+
+Example (JSON):
+
+```json
+{
+  "command": "node",
+  "args": ["./bin/unionize-software.mjs", "mcp", "serve"],
+  "cwd": "/absolute/path/to/unionize-software-webapp"
+}
+```
+
+If your tool supports `npx` configs, you can also use:
+
+- command: `npx`
+- args: `["-y","unionize-mcp","serve"]`
 
 ## Design boundary
 

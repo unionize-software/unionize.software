@@ -7,6 +7,26 @@ description: "How the shipped OpenClaw skill tells agents to use the project saf
 
 The repo includes a starter skill at `skills/unionize-organizing/SKILL.md`.
 
+## Quick start
+
+1. Clone and install:
+
+```bash
+git clone https://github.com/unionize-software/unionize-software-webapp.git
+cd unionize-software-webapp
+pnpm install
+```
+
+2. Point your agent tool at the skill file:
+
+- `skills/unionize-organizing/SKILL.md`
+
+3. Run the MCP server (recommended alongside the skill):
+
+```bash
+pnpm mcp:serve
+```
+
 ## What the skill is for
 
 The skill tells agents when to use the guide corpus, when to search, when to use the pathfinder, and what safety boundaries they should not cross.

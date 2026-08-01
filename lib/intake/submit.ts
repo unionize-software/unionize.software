@@ -6,7 +6,8 @@ type IntakeResponse = {
 };
 
 export async function submitEncryptedIntake(payload: IntakeApiSubmission) {
-  const response = await fetch("/api/intake", {
+  const endpoint = process.env.NEXT_PUBLIC_INTAKE_API_URL ?? "/api/intake";
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

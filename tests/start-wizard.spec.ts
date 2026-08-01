@@ -10,7 +10,7 @@ test("start wizard does not call intake API and makes AI guide recommendations c
   let intakeCalled = false;
 
   page.on("request", (request) => {
-    if (request.url().includes("/api/intake")) {
+    if (request.url().includes("/api/intake") || request.url().includes("/intake")) {
       intakeCalled = true;
     }
   });

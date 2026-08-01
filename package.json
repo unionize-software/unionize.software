@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "bin": {
-    "unionize-software": "./bin/unionize-software.mjs"
+    "unionize-software": "./bin/unionize-software.mjs",
+    "unionize-mcp": "./bin/unionize-mcp.mjs"
   },
   "packageManager": "pnpm@10.19.0",
   "repository": {
@@ -25,13 +26,18 @@
     "decrypt-intake": "tsx scripts/decrypt-intake.ts",
     "purge-expired-intakes": "tsx scripts/purge-expired-intakes.ts",
     "print-intake-key-fingerprint": "tsx scripts/print-intake-key-fingerprint.ts",
-    "unionize": "node scripts/unionize-cli.ts",
-    "mcp:serve": "node scripts/unionize-cli.ts mcp serve"
+    "unionize": "tsx scripts/unionize-cli.ts",
+    "test:mcp": "node scripts/mcp-smoke-test.mjs",
+    "test:mcp:integration": "node scripts/mcp-integration-test.mjs",
+    "mcp:serve": "tsx scripts/unionize-cli.ts mcp serve"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.887.0",
+    "@aws-sdk/client-s3": "^3.887.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@radix-ui/react-slot": "^1.2.3",
     "@supabase/supabase-js": "^2.57.4",
+    "better-sqlite3": "^12.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.6",
@@ -46,11 +52,13 @@
     "react-dom": "^19.1.1",
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.3.1",
+    "tsx": "^4.20.5",
     "zod": "^4.1.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4.1.12",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
@@ -59,7 +67,11 @@
     "eslint-config-next": "^15.5.2",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12",
-    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
   }
 }

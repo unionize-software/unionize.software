@@ -7,6 +7,19 @@ description: "How the command-line interface exposes guides, search, and pathfin
 
 The CLI is the smallest useful interface for people who want the guide corpus outside the browser.
 
+## Install (local)
+
+Prereqs:
+
+- Node `22+`
+- `pnpm`
+
+```bash
+git clone https://github.com/unionize-software/unionize-software-webapp.git
+cd unionize-software-webapp
+pnpm install
+```
+
 ## What it does
 
 - lists guides
@@ -22,6 +35,12 @@ pnpm unionize guides list
 pnpm unionize guides search "retaliation" --tag retaliation
 pnpm unionize guides read workplace-mapping
 pnpm unionize start schema --json
+```
+
+If you prefer the bin wrapper directly:
+
+```bash
+node bin/unionize-software.mjs guides list
 ```
 
 ## Why it matters
