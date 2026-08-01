@@ -106,7 +106,7 @@ function HubInfoGrid({
     <div className={cn("grid gap-4", gridColumns[columns])}>
       {items.map((item) => (
         <div key={item.title} className="border-l-2 border-primary/40 py-1 pl-4">
-          <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold leading-tight tracking-[-0.03em]">
+          <h3 className="text-xl font-bold leading-tight tracking-[-0.025em]">
             {item.title}
           </h3>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">{item.description}</p>
@@ -128,7 +128,7 @@ function HubSectionIntro({
   return (
     <div className="space-y-3">
       {eyebrow ? <p className="eyebrow-label text-primary">{eyebrow}</p> : null}
-      <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.04em] text-balance sm:text-4xl">
+      <h2 className="text-3xl font-bold tracking-[-0.04em] text-balance sm:text-4xl">
         {title}
       </h2>
       {description ? (

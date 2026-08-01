@@ -179,10 +179,10 @@ textarea {
 }
 
 .display-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 0.94;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
 }
 
 .field-kicker {
@@ -191,21 +191,12 @@ textarea {
   letter-spacing: 0.025em;
 }
 
-.poster-title {
-  font-family: var(--font-display);
-  font-size: clamp(5rem, 8.5vw, 9.5rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 0.82;
-  text-wrap: balance;
-}
-
 .section-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.6rem, 5.4vw, 6.5rem);
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 0.86;
+  font-family: var(--font-body);
+  font-size: clamp(2.5rem, 4.2vw, 4.75rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
@@ -217,17 +208,35 @@ textarea {
 
 .issue-finder__intro {
   display: grid;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.issue-finder__title {
+  max-width: 15ch;
+  margin-top: 0.65rem;
+  color: var(--primary-foreground);
+  font-size: clamp(2.8rem, 4.8vw, 5.4rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.issue-finder__privacy {
+  max-width: 24rem;
+  border-top: 2px solid color-mix(in srgb, var(--primary-foreground) 55%, transparent);
+  padding-top: 1rem;
 }
 
 .issue-finder__input {
   width: 100%;
-  min-height: 4.2rem;
+  min-height: 5rem;
   border: 3px solid var(--foreground);
   border-radius: 0;
   background: var(--background);
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.25rem;
   color: var(--foreground);
   font-size: clamp(1rem, 0.96rem + 0.2vw, 1.15rem);
   font-weight: 700;
@@ -245,6 +254,7 @@ textarea {
 }
 
 .issue-finder__results {
+  display: grid;
   margin-top: 1.25rem;
   border-top: 2px solid color-mix(in srgb, var(--primary-foreground) 65%, transparent);
 }
@@ -255,7 +265,7 @@ textarea {
   align-items: center;
   gap: 1.25rem;
   border-bottom: 1px solid color-mix(in srgb, var(--primary-foreground) 42%, transparent);
-  padding: 1rem 0;
+  padding: 1.1rem 0;
 }
 
 .issue-finder__result:hover,
@@ -264,7 +274,7 @@ textarea {
 }
 
 .issue-finder__arrow {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 2rem;
   line-height: 1;
   transition: transform 150ms ease;
@@ -326,7 +336,7 @@ textarea {
   top: 0.9rem;
   right: 0;
   color: var(--primary);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 2.25rem;
   line-height: 1;
   transition: transform 150ms ease;
@@ -415,10 +425,10 @@ textarea {
 [data-prose] h4 {
   margin-top: 2rem;
   margin-bottom: 0.8rem;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
 }
 
 [data-prose] h2 {
@@ -550,8 +560,13 @@ textarea {
 
 @media (min-width: 768px) {
   .issue-finder__intro {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.55fr);
     align-items: end;
+  }
+
+  .issue-finder__results {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 4vw, 3.5rem);
   }
 
   .guide-index {

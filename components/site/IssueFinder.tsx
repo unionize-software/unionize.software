@@ -62,14 +62,17 @@ export function IssueFinder() {
     <div className="issue-finder">
       <div className="issue-finder__intro">
         <div>
-          <p className="field-kicker text-accent">Find the closest guide</p>
-          <h2 className="mt-2 text-2xl font-bold tracking-[-0.025em] text-primary-foreground sm:text-3xl">
-            Describe what changed
-          </h2>
+          <p className="field-kicker text-accent">For software and game workers</p>
+          <h1 id="home-heading" className="issue-finder__title">
+            Describe what changed at work.
+          </h1>
         </div>
-        <p className="max-w-xs text-sm leading-6 text-primary-foreground/72">
-          Private on this page. Nothing you type is sent or saved.
-        </p>
+        <div className="issue-finder__privacy">
+          <p className="text-sm leading-6 text-primary-foreground/76">
+            <strong className="text-primary-foreground">Your words stay here.</strong>{" "}
+            Nothing you type is sent or saved.
+          </p>
+        </div>
       </div>
 
       <label className="sr-only" htmlFor="workplace-issue">
@@ -98,7 +101,7 @@ export function IssueFinder() {
               className="issue-finder__result group"
             >
               <span>
-                <span className="block text-lg font-bold tracking-[-0.02em] sm:text-xl">
+                <span className="block text-lg font-bold sm:text-xl">
                   {issue.title}
                 </span>
                 <span className="mt-1 block max-w-2xl text-sm leading-6 text-primary-foreground/68">
