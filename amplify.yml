@@ -9,7 +9,7 @@ frontend:
       commands:
         - pnpm build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: out
     files:
       - "**/*"
   cache:

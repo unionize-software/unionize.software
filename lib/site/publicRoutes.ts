@@ -6,13 +6,13 @@ export type NavItem = {
 };
 
 export const primaryNavItems = [
-  { href: "/start", label: "Start Here" },
-  { href: "/resources/safety-basics", label: "Safety" },
-  { href: "/paths", label: "Paths" },
-  { href: "/resources", label: "Wiki" },
+  { href: "/resources", label: "Guides" },
   { href: "/know-your-rights", label: "Rights" },
+  { href: "/organize", label: "Organize" },
+  { href: "/resources/safety-basics", label: "Safety" },
+  { href: "/states", label: "States" },
   { href: "/evidence", label: "Evidence" },
-  { href: "/game-workers", label: "Game Workers" },
+  { href: "/start", label: "Pathfinder" },
 ] as const satisfies ReadonlyArray<NavItem>;
 
 export const footerNavItems = [
@@ -20,6 +20,7 @@ export const footerNavItems = [
   { href: "/paths", label: "Paths" },
   { href: "/resources", label: "Wiki" },
   { href: "/resources/safety-basics", label: "Safety" },
+  { href: "/states", label: "States" },
   { href: "/organize", label: "Organize" },
   { href: "/ai-surveillance", label: "AI & Data" },
   { href: "/evidence", label: "Evidence" },
@@ -47,6 +48,7 @@ export const staticPublicRoutes = [
   "/security",
   "/start",
   "/start/results",
+  "/states" as Route,
   "/talk-to-organizer",
   "/tooling",
   "/tooling/cli",

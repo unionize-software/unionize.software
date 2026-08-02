@@ -5,15 +5,30 @@ eyebrow: "CLI"
 description: "How the command-line interface exposes guides, search, and pathfinder logic without requiring people to scrape the site."
 ---
 
-The CLI is the smallest useful interface for people who want the guide corpus outside the browser.
+The CLI turns the public guide corpus into a stable local interface. It is useful when a maintainer needs to inspect metadata, an organizer wants an offline-readable page, or an automation needs structured routing without scraping rendered HTML.
 
-## What it does
+## Install (local)
+
+Prereqs:
+
+- Node `22+`
+- `pnpm`
+
+```bash
+git clone https://github.com/unionize-software/unionize.software.git
+cd unionize.software
+pnpm install
+```
+
+## What you can do
 
 - lists guides
 - reads guide pages by slug
 - searches guides by query and optional tag
 - exposes the Start Here schema
 - runs the pathfinder from structured JSON input
+
+Guide output comes from the same content model that powers the website. A slug, jurisdiction, review status, or related-guide link therefore does not need to be reconstructed from page markup.
 
 ## Example commands
 
@@ -24,6 +39,27 @@ pnpm unionize guides read workplace-mapping
 pnpm unionize start schema --json
 ```
 
-## Why it matters
+To inspect the options before passing structured input, start with the schema command. Treat pathfinder output as routing into public material, not as an individualized legal determination.
 
-The CLI gives maintainers, organizers, and local automation a stable way to use the guide corpus without depending on rendered page structure.
+If you prefer the bin wrapper directly:
+
+```bash
+node bin/unionize-software.mjs guides list
+```
+
+## Intended boundary
+
+The guide and Start Here commands read public project content. They do not expose encrypted intake or a private worker workspace.
+
+The broader executable also contains operator-only intake commands documented in the repository README. Those commands use a local organizer cache and require separate credentials or key material. Public-content automation should not assume access to them, and agents should never request or print private keys.
+
+## Verify the installation
+
+Run one list and one read command. You should receive the catalog and the body of the named guide without starting the web application:
+
+```bash
+pnpm unionize guides list
+pnpm unionize guides read safety-basics
+```
+
+If a consumer depends on fields rather than prose, use JSON-capable commands where available and pin the repository or package version. Human-facing copy will continue to improve; the content model is the integration surface.

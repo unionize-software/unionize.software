@@ -28,4 +28,4 @@ Operational logging should redact sensitive keys and avoid storing ciphertext or
 
 ## Abuse controls
 
-The intake route applies same-origin checks, payload-size limits, and rate limits to reduce spam and probing without adding behavioral tracking.
+The intake route applies same-origin checks and payload-size limits. The AWS deployment also configures API Gateway request throttling. These are coarse abuse controls, not client authentication or an anonymity guarantee; self-hosted operators must provide equivalent controls at their own network boundary.

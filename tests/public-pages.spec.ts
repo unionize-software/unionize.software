@@ -19,6 +19,8 @@ const pages = [
   "/resources/keystroke-tracking-ai-training",
   "/resources/retaliation-response-checklist",
   "/resources/company-device-and-account-safety-checklist",
+  "/states",
+  "/states/ca",
   "/tooling",
   "/tooling/cli",
   "/tooling/mcp",
@@ -34,6 +36,7 @@ const mobilePages = [
   "/resources",
   "/resources/safety-basics",
   "/resources/keystroke-tracking-ai-training",
+  "/states",
   "/tooling",
   "/evidence",
 ];
@@ -72,6 +75,24 @@ test("/resources supports optional tag filters", async ({ page }) => {
     }),
   ).toBeVisible();
   await expect(searchResults.getByText("Layoffs and Severance", { exact: true })).toHaveCount(0);
+});
+
+test("/states exposes all jurisdictions and sourced state routes", async ({ page }) => {
+  await page.goto("/states");
+
+  await expect(page.getByText("51", { exact: true }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /California/ })).toHaveAttribute("href", "/states/ca");
+  await page.getByLabel("Find a state or agency").fill("Washington");
+  await expect(page.getByText("1 of 51 jurisdictions")).toBeVisible();
+});
+
+test("/states/ca keeps legal gates visible", async ({ page }) => {
+  await page.goto("/states/ca");
+
+  await expect(page.getByRole("heading", { name: "California worker-resource routes" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Agency route verified/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "OSHA State Plan: public and private sectors" })).toBeVisible();
+  await expect(page.getByText("Public sector — review required")).toBeVisible();
 });
 
 test("/resources/software-worker-scale-and-leverage shows resource page chrome", async ({ page }) => {

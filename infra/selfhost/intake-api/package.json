@@ -1,0 +1,11 @@
+{
+  "name": "unionize-intake-api-selfhost",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.9.0"
+  }
+}

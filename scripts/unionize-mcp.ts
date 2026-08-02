@@ -8,23 +8,36 @@ import {
   getGuideForAgents,
   getGuideResourceUri,
   getPathfinderReference,
+  getStateResourceCatalog,
+  getStateResourceForAgents,
   githubRepositoryUrl,
   searchGuidesForAgents,
   websiteBaseUrl,
 } from "../lib/agent/unionize.ts";
 
 function buildGuideMarkdown(guide: NonNullable<Awaited<ReturnType<typeof getGuideForAgents>>>) {
+  const sourceLines = guide.sources.flatMap((source) => [
+    `- [${source.title}](${source.url}) — ${source.publisher} (${source.kind})`,
+    source.note ? `  - ${source.note}` : null,
+  ]).filter((line): line is string => Boolean(line));
+
   return [
     `# ${guide.title}`,
     "",
     `- Category: ${guide.category}`,
     `- Jurisdiction: ${guide.jurisdiction}`,
     `- Last reviewed: ${guide.lastReviewed}`,
+    `- Review status: ${guide.reviewStatus}`,
+    `- Risk level: ${guide.riskLevel}`,
+    `- Source footing: ${guide.sourceStatus}`,
     `- Legal scope: ${guide.legalScope}`,
+    `- Use when: ${guide.whenToUse}`,
+    `- Not for: ${guide.notFor}`,
     `- Web URL: ${guide.url}`,
     `- Resource URI: ${guide.resourceUri}`,
     "",
     guide.body.trim(),
+    ...(sourceLines.length > 0 ? ["", "## Structured sources", "", ...sourceLines] : []),
     "",
   ].join("\n");
 }
@@ -103,6 +116,54 @@ export function createUnionizeMcpServer() {
             uri: uri.href,
             mimeType: "text/markdown",
             text: buildGuideMarkdown(guide),
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerResource(
+    "state-directory",
+    "unionize://states",
+    {
+      title: "U.S. state worker-resource directory",
+      description:
+        "Official labor, wage-and-hour, safety, discrimination, and public-sector research routes for all 50 states plus D.C.",
+      mimeType: "application/json",
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "application/json",
+          text: JSON.stringify(getStateResourceCatalog(), null, 2),
+        },
+      ],
+    }),
+  );
+
+  server.registerResource(
+    "state-resources",
+    new ResourceTemplate("unionize://states/{code}", { list: undefined }),
+    {
+      title: "U.S. state worker-resource routes",
+      description: "One jurisdiction's sourced worker-agency routes and visible legal-review gates.",
+      mimeType: "application/json",
+    },
+    async (uri, { code }) => {
+      const stateCode = getSingleResourceParam(code);
+      const state = getStateResourceForAgents(stateCode);
+
+      if (!state) {
+        throw new Error(`State resources not found for: ${stateCode}`);
+      }
+
+      return {
+        contents: [
+          {
+            uri: uri.href,
+            mimeType: "application/json",
+            text: JSON.stringify(state, null, 2),
           },
         ],
       };
@@ -296,6 +357,50 @@ export function createUnionizeMcpServer() {
   );
 
   server.registerTool(
+    "list_state_resources",
+    {
+      title: "List U.S. state worker resources",
+      description:
+        "List or search the sourced worker-resource directory for all 50 U.S. states plus D.C.",
+      inputSchema: {
+        query: z.string().optional(),
+      },
+    },
+    async ({ query }) => {
+      const result = getStateResourceCatalog(query ?? "");
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        structuredContent: result,
+      };
+    },
+  );
+
+  server.registerTool(
+    "get_state_resources",
+    {
+      title: "Get one state's worker resources",
+      description:
+        "Return official worker-agency routes, OSHA jurisdiction, sources, and legal-review gates for one U.S. state or D.C.",
+      inputSchema: {
+        code: z.string().min(2).max(32),
+      },
+    },
+    async ({ code }) => {
+      const state = getStateResourceForAgents(code);
+
+      if (!state) {
+        throw new Error(`State resources not found for: ${code}`);
+      }
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(state, null, 2) }],
+        structuredContent: state,
+      };
+    },
+  );
+
+  server.registerTool(
     "project_links",
     {
       title: "Project links",
@@ -312,6 +417,7 @@ export function createUnionizeMcpServer() {
               githubRepositoryUrl,
               catalogResource: "unionize://catalog",
               pathfinderSchemaResource: "unionize://pathfinder/schema",
+              stateDirectoryResource: "unionize://states",
             },
             null,
             2,
@@ -323,6 +429,7 @@ export function createUnionizeMcpServer() {
         githubRepositoryUrl,
         catalogResource: "unionize://catalog",
         pathfinderSchemaResource: "unionize://pathfinder/schema",
+        stateDirectoryResource: "unionize://states",
       },
     }),
   );

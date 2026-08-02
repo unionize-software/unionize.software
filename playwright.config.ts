@@ -14,13 +14,14 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: `pnpm build && pnpm exec next start --hostname 127.0.0.1 --port ${testPort}`,
+    command: `pnpm build && npx --yes serve@14 out --no-port-switching --listen tcp://127.0.0.1:${testPort}`,
     url: testBaseUrl,
     reuseExistingServer: false,
     timeout: 120_000,
     env: {
       NEXT_PUBLIC_SITE_URL: testBaseUrl,
-      NEXT_PUBLIC_INTAKE_PUBLIC_KEY_ID: "test-2026-04",
+      NEXT_PUBLIC_INTAKE_API_URL: "https://api.unionize.software/intake",
+      NEXT_PUBLIC_INTAKE_PUBLIC_KEY_ID: "default-2026-04",
       NEXT_PUBLIC_INTAKE_PUBLIC_KEY_BASE64: testPublicKeyBase64,
       NEXT_PUBLIC_INTAKE_PUBLIC_KEY_ROTATED_AT: "2026-04-22",
       INTAKE_RETENTION_DAYS: "30",

@@ -1,6 +1,9 @@
 import { promises as fs } from "node:fs";
+import { createRequire } from "node:module";
 
-import sodium from "libsodium-wrappers";
+const require = createRequire(import.meta.url);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const sodium = require("libsodium-wrappers") as typeof import("libsodium-wrappers");
 
 function getArg(flag: string) {
   const index = process.argv.indexOf(flag);

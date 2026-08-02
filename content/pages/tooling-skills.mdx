@@ -5,11 +5,33 @@ eyebrow: "Skills"
 description: "How the shipped OpenClaw skill tells agents to use the project safely and consistently."
 ---
 
-The repo includes a starter skill at `skills/unionize-organizing/SKILL.md`.
+The repository includes an agent skill at `skills/unionize-organizing/SKILL.md`. The MCP server supplies the public material; the skill supplies the operating judgment for using it.
 
-## What the skill is for
+## Quick start
 
-The skill tells agents when to use the guide corpus, when to search, when to use the pathfinder, and what safety boundaries they should not cross.
+1. Clone and install:
+
+```bash
+git clone https://github.com/unionize-software/unionize.software.git
+cd unionize.software
+pnpm install
+```
+
+2. Point your agent tool at the skill file:
+
+- `skills/unionize-organizing/SKILL.md`
+
+3. Run the MCP server (recommended alongside the skill):
+
+```bash
+pnpm mcp:serve
+```
+
+## What the skill changes
+
+The skill tells an agent when to search the guide corpus, when to use the pathfinder, how to respect jurisdiction and review metadata, and when the safe response is to narrow the next step or recommend qualified help.
+
+Without those instructions, an agent can retrieve a relevant page and still use it badly—for example, by flattening a contractor-status question, treating a practice-based checklist as law, or escalating before workers have compared facts.
 
 ## What it reinforces
 
@@ -17,7 +39,22 @@ The skill tells agents when to use the guide corpus, when to search, when to use
 - no company-device organizing
 - no pretending public guides are legal advice
 - preference for careful fact comparison, trusted coworkers, and lawful next steps
+- explicit separation between legal orientation, organizing practice, and case-specific advice
+- smaller, reversible next steps when worker status or retaliation risk is unclear
 
-## Why the skill matters
+## Use it with the corpus
 
-Even a good MCP surface can be used badly if the agent does not know the norms of the project. The skill bundle keeps the tooling aligned with the tone and boundaries of the site.
+The intended stack is simple:
+
+1. The skill identifies the safety and reasoning rules.
+2. The MCP catalog or CLI finds relevant public pages.
+3. The agent reads the guide metadata and body before responding.
+4. The response states important limits and routes the worker toward human help when the page cannot resolve the case.
+
+The skill should not be copied into a system that also sends worker context to unreviewed third-party services without a separate privacy assessment. Good response rules do not compensate for an unsafe data path.
+
+## Maintenance
+
+Treat the skill and the corpus as one interface. When page types, metadata, tool names, or safety boundaries change, update the skill and run the MCP checks before distributing it again.
+
+The standard is the same as the public site: an agent should help a worker become more precise and less exposed. It should never manufacture certainty merely because it can produce fluent text.

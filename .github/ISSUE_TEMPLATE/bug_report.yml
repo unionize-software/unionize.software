@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a reproducible problem without sensitive workplace information.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include worker names, employer names, intake messages, credentials, private keys, or campaign details. Use the security policy for sensitive reports.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the observable behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: Use public or synthetic data only.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, operating system, Node version, or MCP host as relevant.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed sensitive workplace data, secrets, and identifying information.
+          required: true

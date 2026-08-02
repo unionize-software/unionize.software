@@ -5,9 +5,46 @@ eyebrow: "MCP"
 description: "How the local MCP server exposes guide resources, prompts, and tools for agents in a way that matches the public site."
 ---
 
-The MCP server is the agent-facing layer for the public knowledge in this project.
+The MCP server gives an agent a bounded way to search, read, and route through the same public material shown on the site. It exists so an agent can cite the corpus directly instead of guessing at labor guidance from general model knowledge or scraping presentation markup.
 
-## What it exposes
+## Quick start (local)
+
+Prereqs:
+
+- Node `22+`
+- `pnpm`
+
+Install and run (repo clone):
+
+```bash
+git clone https://github.com/unionize-software/unionize.software.git
+cd unionize.software
+pnpm install
+pnpm mcp:serve
+```
+
+That starts an MCP server over standard input and output. An MCP-capable host launches the process and exchanges protocol messages with it; the server does not open a public network port.
+
+## Package status
+
+The standalone `unionize-mcp` package is prepared for a public npm release but is not published yet. Until a release is visible on npm, use the repository-based command above. The site does not advertise an `npx` command that the public registry cannot resolve.
+
+## Cursor setup (project)
+
+If you're using Cursor, add a project MCP config at `.cursor/mcp.json` (this repo ships a starting template at `.cursor/mcp.json.example`):
+
+```json
+{
+  "mcpServers": {
+    "unionize": {
+      "command": "npx",
+      "args": ["-y", "unionize-mcp", "serve"]
+    }
+  }
+}
+```
+
+## What the agent receives
 
 - `unionize://catalog`
 - `unionize://pathfinder/schema`
@@ -15,12 +52,49 @@ The MCP server is the agent-facing layer for the public knowledge in this projec
 - prompts for issue triage and first-conversation planning
 - tools for guide search, project links, and pathfinder routing
 
-## How to run it
+The catalog is the discovery surface. Guide resources are the source material. Pathfinder tools narrow a situation to relevant pages; they do not decide whether conduct is legally protected or recommend a public escalation on their own.
+
+## Run from a repository clone
 
 ```bash
 pnpm mcp:serve
 ```
 
-## Design boundary
+## Connect a host
+
+Most MCP-capable tools ask for a command + args.
+
+Use (repo clone):
+
+- command: `node`
+- args: `["./bin/unionize-software.mjs","mcp","serve"]`
+- cwd: the repo directory
+
+Example (JSON):
+
+```json
+{
+  "command": "node",
+  "args": ["./bin/unionize-software.mjs", "mcp", "serve"],
+  "cwd": "/absolute/path/to/unionize.software"
+}
+```
+
+After the package is published, release notes will provide the exact registry command and version. Pin that version in long-lived agent configurations instead of installing an unbounded latest release.
+
+## Test the connection
+
+After restarting the host, ask it to list the `unionize` resources and read `unionize://catalog`. If the catalog is unavailable, run the command directly in a terminal first; startup errors must remain on stderr so protocol output on stdout stays valid.
+
+The repository also includes smoke and integration checks:
+
+```bash
+pnpm test:mcp
+pnpm test:mcp:integration
+```
+
+## Trust boundary
 
 This MCP surface is intentionally narrow. It exposes public guide content and local routing logic. It does **not** expose encrypted intake content or any private organizer workspace.
+
+An agent using the server should preserve the limits attached to each guide: jurisdiction, legal scope, review status, and intended use. Retrieval makes a source available; it does not turn draft legal content into reviewed advice.

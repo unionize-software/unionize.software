@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "unionize": {
+      "command": "npx",
+      "args": ["-y", "unionize-mcp", "serve"],
+      "env": {}
+    }
+  }
+}

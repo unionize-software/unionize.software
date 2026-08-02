@@ -1,16 +1,31 @@
-import { promises as fs } from "node:fs";
+import { existsSync, promises as fs } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import matter from "gray-matter";
 
 import { guideFrontmatterSchema } from "../content/frontmatterSchema.ts";
+import {
+  getUsStateResource,
+  searchUsStateResources,
+  stateResourceSources,
+  usStateResources,
+} from "../jurisdictions/usStates.ts";
 import { startQuestions, type StartAnswers } from "../start/questions.ts";
 
 export const websiteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://unionize.software";
 export const githubRepositoryUrl =
-  "https://github.com/unionize-software/unionize-software-webapp";
+  "https://github.com/unionize-software/unionize.software";
 
-const guidesDirectory = path.join(process.cwd(), "content", "guides");
+const moduleDirectory = path.dirname(fileURLToPath(import.meta.url));
+const guideDirectoryCandidates = [
+  process.env.UNIONIZE_GUIDES_DIRECTORY,
+  path.join(moduleDirectory, "..", "content", "guides"),
+  path.join(moduleDirectory, "..", "..", "content", "guides"),
+  path.join(process.cwd(), "content", "guides"),
+].filter((candidate): candidate is string => Boolean(candidate));
+const guidesDirectory =
+  guideDirectoryCandidates.find((candidate) => existsSync(candidate)) ?? guideDirectoryCandidates[0];
 
 type GuideDocument = {
   title: string;
@@ -21,6 +36,16 @@ type GuideDocument = {
   last_reviewed: string;
   review_status: string;
   risk_level: string;
+  source_status: string;
+  when_to_use: string;
+  not_for: string;
+  sources: Array<{
+    title: string;
+    url: string;
+    publisher: string;
+    kind: string;
+    note?: string;
+  }>;
   excerpt: string;
   searchText: string;
   body: string;
@@ -665,6 +690,10 @@ function guideToCatalogEntry(guide: GuideDocument) {
     lastReviewed: guide.last_reviewed,
     reviewStatus: guide.review_status,
     riskLevel: guide.risk_level,
+    sourceStatus: guide.source_status,
+    whenToUse: guide.when_to_use,
+    notFor: guide.not_for,
+    sources: guide.sources,
     excerpt: guide.excerpt,
     url: getGuideWebUrl(guide.slug),
     resourceUri: getGuideResourceUri(guide.slug),
@@ -823,4 +852,30 @@ export function buildPathfinderResultForAgents(answers: StartAnswers) {
       resourceUri: getGuideResourceUriFromHref(resource.href),
     })),
   };
+}
+
+function stateToAgentEntry(state: (typeof usStateResources)[number]) {
+  return {
+    ...state,
+    url: new URL(`/states/${state.code.toLowerCase()}`, websiteBaseUrl).toString(),
+    resourceUri: `unionize://states/${state.code.toLowerCase()}`,
+  };
+}
+
+export function getStateResourceCatalog(query = "") {
+  const states = searchUsStateResources(query);
+
+  return {
+    generatedAt: new Date().toISOString(),
+    lastVerified: "2026-08-01",
+    scope: "All 50 U.S. states plus the District of Columbia. Agency routes are verified; jurisdiction-specific legal interpretations remain review-gated.",
+    count: states.length,
+    sources: stateResourceSources,
+    states: states.map(stateToAgentEntry),
+  };
+}
+
+export function getStateResourceForAgents(codeOrSlug: string) {
+  const state = getUsStateResource(codeOrSlug);
+  return state ? stateToAgentEntry(state) : null;
 }

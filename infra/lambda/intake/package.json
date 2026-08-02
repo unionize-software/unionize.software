@@ -1,0 +1,10 @@
+{
+  "name": "unionize-intake-lambda",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.887.0",
+    "@aws-sdk/client-s3": "^3.887.0",
+    "zod": "^4.3.6"
+  }
+}

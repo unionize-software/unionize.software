@@ -1,38 +1,44 @@
-import Link from "next/link";
 import type { Route } from "next";
+import Link from "next/link";
 
 import { footerNavItems } from "@/lib/site/publicRoutes";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/70 bg-[linear-gradient(180deg,rgba(251,247,239,0.88),rgba(251,247,239,0.72))]">
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
-        <div className="space-y-3">
-          <p className="eyebrow-label text-primary">unionize.software</p>
-          <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-            Public educational resources for software and game workers. Useful knowledge first,
-            more platform complexity later.
+    <footer className="mt-16 bg-foreground text-background">
+      <div className="mx-auto grid max-w-[86rem] gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-10">
+        <div>
+          <p className="font-[family-name:var(--font-display)] text-5xl uppercase leading-none tracking-[-0.02em]">
+            Unionize<span className="text-accent">.</span>software
+          </p>
+          <p className="mt-5 max-w-xl text-base leading-7 text-background/68">
+            Free, privacy-first guidance for software and game workers trying to
+            understand a workplace problem and choose a safer next step.
           </p>
           <a
-            href="https://github.com/unionize-software/unionize-software-webapp"
+            href="https://github.com/unionize-software/unionize.software"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex text-sm font-medium text-foreground underline-offset-4 hover:text-primary hover:underline"
+            className="mt-5 inline-block font-bold underline decoration-2 underline-offset-4 hover:text-accent"
           >
-            View the source on GitHub
+            Inspect the source
           </a>
         </div>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground lg:justify-end">
+
+        <nav
+          aria-label="Footer navigation"
+          className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm font-bold sm:grid-cols-3 lg:justify-self-end"
+        >
           {footerNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href as Route}
-              className="underline-offset-4 hover:text-foreground hover:underline"
+              className="underline-offset-4 hover:text-accent hover:underline"
             >
               {item.label}
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </footer>
   );

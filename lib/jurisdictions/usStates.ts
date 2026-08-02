@@ -1,0 +1,285 @@
+export type UsJurisdictionKind = "state" | "federal-district";
+
+export type OshaCoverage =
+  | "federal"
+  | "state-plan-public-and-private"
+  | "state-plan-public-only";
+
+export type StateResourceSource = {
+  id: string;
+  title: string;
+  publisher: string;
+  url: string;
+  lastChecked: string;
+  scope: string;
+};
+
+export type UsStateResource = {
+  code: string;
+  name: string;
+  slug: string;
+  kind: UsJurisdictionKind;
+  laborAgency: {
+    name: string;
+    url: string;
+    directoryUrl: string;
+  };
+  wageAndHour: {
+    stateLawOverviewUrl: string;
+    federalOfficeDirectoryUrl: string;
+    note: string;
+  };
+  safety: {
+    coverage: OshaCoverage;
+    label: string;
+    officialUrl: string;
+    note: string;
+  };
+  discrimination: {
+    officialUrl: string;
+    note: string;
+  };
+  publicSector: {
+    reviewStatus: "needs-jurisdiction-specific-review";
+    stateGovernmentUrl: string;
+    overviewUrl: string;
+    note: string;
+  };
+  provenance: {
+    lastVerified: string;
+    sourceIds: string[];
+    legalReviewStatus: "agency-routes-verified-legal-interpretation-pending";
+  };
+};
+
+const LAST_VERIFIED = "2026-08-01";
+const DOL_STATE_LABOR_OFFICES = "https://www.dol.gov/agencies/whd/state/contacts";
+const DOL_STATE_LAWS = "https://www.dol.gov/agencies/whd/state";
+const DOL_LOCAL_OFFICES = "https://www.dol.gov/agencies/whd/contact/local-offices";
+const OSHA_STATE_PLANS = "https://www.osha.gov/stateplans";
+const EEOC_FEPA_DIRECTORY =
+  "https://www.eeoc.gov/fair-employment-practices-agencies-fepas-and-dual-filing";
+const PUBLIC_SECTOR_OVERVIEW = "https://www.congress.gov/crs-product/R41732";
+const USA_GOV_STATES = "https://www.usa.gov/state-governments";
+
+export const stateResourceSources: StateResourceSource[] = [
+  {
+    id: "dol-state-labor-offices",
+    title: "State Labor Offices",
+    publisher: "U.S. Department of Labor, Wage and Hour Division",
+    url: DOL_STATE_LABOR_OFFICES,
+    lastChecked: LAST_VERIFIED,
+    scope: "Official state labor-office names, contact routes, and agency websites.",
+  },
+  {
+    id: "dol-state-labor-laws",
+    title: "State Labor Laws",
+    publisher: "U.S. Department of Labor, Wage and Hour Division",
+    url: DOL_STATE_LAWS,
+    lastChecked: LAST_VERIFIED,
+    scope: "Federal comparison tables and links for selected state wage-and-hour topics.",
+  },
+  {
+    id: "dol-local-offices",
+    title: "Wage and Hour Division Local Offices",
+    publisher: "U.S. Department of Labor, Wage and Hour Division",
+    url: DOL_LOCAL_OFFICES,
+    lastChecked: LAST_VERIFIED,
+    scope: "Federal wage-and-hour office routes by state.",
+  },
+  {
+    id: "osha-state-plans",
+    title: "State Plans",
+    publisher: "Occupational Safety and Health Administration",
+    url: OSHA_STATE_PLANS,
+    lastChecked: LAST_VERIFIED,
+    scope: "Official state-by-state OSHA jurisdiction and State Plan contact routes.",
+  },
+  {
+    id: "eeoc-fepa",
+    title: "Fair Employment Practices Agencies and Dual Filing",
+    publisher: "U.S. Equal Employment Opportunity Commission",
+    url: EEOC_FEPA_DIRECTORY,
+    lastChecked: LAST_VERIFIED,
+    scope: "Official FEPA and dual-filing orientation; deadlines and coverage can differ.",
+  },
+  {
+    id: "crs-public-sector",
+    title: "Public-Sector Unionization: Federal, State, and Local Laws",
+    publisher: "Congressional Research Service",
+    url: PUBLIC_SECTOR_OVERVIEW,
+    lastChecked: LAST_VERIFIED,
+    scope: "Federal overview showing that state and local public-sector labor law varies by jurisdiction.",
+  },
+  {
+    id: "usa-gov-states",
+    title: "State Governments",
+    publisher: "USA.gov",
+    url: USA_GOV_STATES,
+    lastChecked: LAST_VERIFIED,
+    scope: "Official state-government and agency index for primary-law follow-up.",
+  },
+];
+
+type StateSeed = readonly [
+  code: string,
+  name: string,
+  laborAgencyName: string,
+  laborAgencyUrl: string,
+  oshaCoverage: OshaCoverage,
+];
+
+const stateSeeds: StateSeed[] = [
+  ["AL", "Alabama", "Alabama Department of Labor", "https://adol.alabama.gov/", "federal"],
+  ["AK", "Alaska", "Department of Labor and Workforce Development", "https://labor.alaska.gov/", "state-plan-public-and-private"],
+  ["AZ", "Arizona", "Industrial Commission of Arizona, Labor Department", "https://www.azica.gov/divisions/labor-department", "state-plan-public-and-private"],
+  ["AR", "Arkansas", "Department of Labor and Licensing", "https://www.labor.arkansas.gov/", "federal"],
+  ["CA", "California", "Labor and Workforce Development Agency", "https://www.dir.ca.gov/", "state-plan-public-and-private"],
+  ["CO", "Colorado", "Department of Labor and Employment", "https://cdle.colorado.gov/dlss", "federal"],
+  ["CT", "Connecticut", "Department of Labor", "https://portal.ct.gov/dol", "state-plan-public-only"],
+  ["DE", "Delaware", "Department of Labor", "https://labor.delaware.gov/", "federal"],
+  ["DC", "District of Columbia", "Department of Employment Services", "https://does.dc.gov/", "federal"],
+  ["FL", "Florida", "Department of Business and Professional Regulation", "https://www2.myfloridalicense.com/", "federal"],
+  ["GA", "Georgia", "Department of Labor", "https://dol.georgia.gov/", "federal"],
+  ["HI", "Hawaii", "Department of Labor and Industrial Relations", "https://labor.hawaii.gov/", "state-plan-public-and-private"],
+  ["ID", "Idaho", "Department of Labor", "https://www.labor.idaho.gov/", "federal"],
+  ["IL", "Illinois", "Department of Labor", "https://labor.illinois.gov/", "state-plan-public-only"],
+  ["IN", "Indiana", "Department of Labor", "https://www.in.gov/dol/", "state-plan-public-and-private"],
+  ["IA", "Iowa", "Department of Inspections, Appeals, and Licensing", "https://dial.iowa.gov/", "state-plan-public-and-private"],
+  ["KS", "Kansas", "Department of Labor", "https://www.dol.ks.gov/", "federal"],
+  ["KY", "Kentucky", "Education and Labor Cabinet", "https://elc.ky.gov/", "state-plan-public-and-private"],
+  ["LA", "Louisiana", "Louisiana Works", "https://www.laworks.net/", "federal"],
+  ["ME", "Maine", "Department of Labor", "https://www.maine.gov/labor/", "state-plan-public-only"],
+  ["MD", "Maryland", "Department of Labor", "https://labor.maryland.gov/", "state-plan-public-and-private"],
+  ["MA", "Massachusetts", "Executive Office of Labor and Workforce Development", "https://www.mass.gov/orgs/executive-office-of-labor-and-workforce-development", "state-plan-public-only"],
+  ["MI", "Michigan", "Department of Labor and Economic Opportunity", "https://www.michigan.gov/leo", "state-plan-public-and-private"],
+  ["MN", "Minnesota", "Department of Labor and Industry", "https://www.dli.mn.gov/", "state-plan-public-and-private"],
+  ["MS", "Mississippi", "Department of Employment Security", "https://mdes.ms.gov/", "federal"],
+  ["MO", "Missouri", "Department of Labor and Industrial Relations", "https://labor.mo.gov/", "federal"],
+  ["MT", "Montana", "Department of Labor and Industry", "https://dli.mt.gov/", "federal"],
+  ["NE", "Nebraska", "Department of Labor", "https://dol.nebraska.gov/", "federal"],
+  ["NV", "Nevada", "Department of Business and Industry, Office of the Labor Commissioner", "https://labor.nv.gov/", "state-plan-public-and-private"],
+  ["NH", "New Hampshire", "Department of Labor", "https://www.dol.nh.gov/", "federal"],
+  ["NJ", "New Jersey", "Department of Labor and Workforce Development", "https://www.nj.gov/labor/", "state-plan-public-only"],
+  ["NM", "New Mexico", "Department of Workforce Solutions", "https://www.dws.state.nm.us/", "state-plan-public-and-private"],
+  ["NY", "New York", "Department of Labor", "https://dol.ny.gov/", "state-plan-public-only"],
+  ["NC", "North Carolina", "Department of Labor", "https://www.labor.nc.gov/", "state-plan-public-and-private"],
+  ["ND", "North Dakota", "Department of Labor and Human Rights", "https://www.nd.gov/labor/", "federal"],
+  ["OH", "Ohio", "Department of Commerce, Bureau of Wage and Hour Administration", "https://ohio.gov/jobs/topic-hubs/labor-law", "federal"],
+  ["OK", "Oklahoma", "Department of Labor", "https://oklahoma.gov/labor.html", "federal"],
+  ["OR", "Oregon", "Bureau of Labor and Industries", "https://www.oregon.gov/boli/", "state-plan-public-and-private"],
+  ["PA", "Pennsylvania", "Department of Labor and Industry", "https://www.pa.gov/agencies/dli", "federal"],
+  ["RI", "Rhode Island", "Department of Labor and Training", "https://dlt.ri.gov/", "federal"],
+  ["SC", "South Carolina", "Department of Labor, Licensing and Regulation", "https://llr.sc.gov/", "state-plan-public-and-private"],
+  ["SD", "South Dakota", "Department of Labor and Regulation", "https://dlr.sd.gov/", "federal"],
+  ["TN", "Tennessee", "Department of Labor and Workforce Development", "https://www.tn.gov/workforce", "state-plan-public-and-private"],
+  ["TX", "Texas", "Workforce Commission", "https://www.twc.texas.gov/", "federal"],
+  ["UT", "Utah", "Labor Commission", "https://laborcommission.utah.gov/", "state-plan-public-and-private"],
+  ["VT", "Vermont", "Department of Labor", "https://labor.vermont.gov/", "state-plan-public-and-private"],
+  ["VA", "Virginia", "Department of Labor and Industry", "https://doli.virginia.gov/", "state-plan-public-and-private"],
+  ["WA", "Washington", "Department of Labor and Industries", "https://www.lni.wa.gov/", "state-plan-public-and-private"],
+  ["WV", "West Virginia", "Division of Labor", "https://labor.wv.gov/", "federal"],
+  ["WI", "Wisconsin", "Department of Workforce Development", "https://dwd.wisconsin.gov/", "federal"],
+  ["WY", "Wyoming", "Department of Workforce Services", "https://dws.wyo.gov/", "state-plan-public-and-private"],
+];
+
+function slugifyStateName(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function getSafetyDetails(code: string, coverage: OshaCoverage) {
+  if (coverage === "state-plan-public-and-private") {
+    return {
+      coverage,
+      label: "OSHA State Plan: public and private sectors",
+      officialUrl: `https://www.osha.gov/stateplans/${code.toLowerCase()}`,
+      note: "The State Plan covers most private-sector workers and all state and local government workers. Federal OSHA retains jurisdiction over some excluded workplaces.",
+    };
+  }
+
+  if (coverage === "state-plan-public-only") {
+    return {
+      coverage,
+      label: "OSHA State Plan: public sector only",
+      officialUrl: `https://www.osha.gov/stateplans/${code.toLowerCase()}`,
+      note: "The State Plan covers state and local government workers; federal OSHA covers most private-sector workers.",
+    };
+  }
+
+  return {
+    coverage,
+    label: "Federal OSHA jurisdiction",
+    officialUrl: `https://www.osha.gov/contactus/bystate/${code}/areaoffice`,
+    note: "Federal OSHA covers most private-sector workers. Federal OSHA does not cover state and local government workers in jurisdictions without an approved public-sector State Plan.",
+  };
+}
+
+export const usStateResources: UsStateResource[] = stateSeeds.map(
+  ([code, name, laborAgencyName, laborAgencyUrl, oshaCoverage]) => {
+    const slug = slugifyStateName(name);
+
+    return {
+      code,
+      name,
+      slug,
+      kind: code === "DC" ? "federal-district" : "state",
+      laborAgency: {
+        name: laborAgencyName,
+        url: laborAgencyUrl,
+        directoryUrl: `${DOL_STATE_LABOR_OFFICES}#${code}`,
+      },
+      wageAndHour: {
+        stateLawOverviewUrl: DOL_STATE_LAWS,
+        federalOfficeDirectoryUrl: DOL_LOCAL_OFFICES,
+        note: "Use the state agency for state-law questions and the federal Wage and Hour Division for FLSA coverage. Coverage, exemptions, remedies, and filing clocks can differ.",
+      },
+      safety: getSafetyDetails(code, oshaCoverage),
+      discrimination: {
+        officialUrl: EEOC_FEPA_DIRECTORY,
+        note: "EEOC identifies state and local Fair Employment Practices Agencies and explains dual filing. State and local coverage, deadlines, standards, and remedies can differ from federal law.",
+      },
+      publicSector: {
+        reviewStatus: "needs-jurisdiction-specific-review",
+        stateGovernmentUrl: `https://www.usa.gov/states/${slug}`,
+        overviewUrl: PUBLIC_SECTOR_OVERVIEW,
+        note: "Do not infer bargaining rights from the agency list. Public-sector coverage can vary by employer type, occupation, level of government, and current state or local law; verify the primary statute and current administering authority.",
+      },
+      provenance: {
+        lastVerified: LAST_VERIFIED,
+        sourceIds: [
+          "dol-state-labor-offices",
+          "dol-state-labor-laws",
+          "dol-local-offices",
+          "osha-state-plans",
+          "eeoc-fepa",
+          "crs-public-sector",
+          "usa-gov-states",
+        ],
+        legalReviewStatus: "agency-routes-verified-legal-interpretation-pending",
+      },
+    };
+  },
+);
+
+const statesByCode = new Map(usStateResources.map((state) => [state.code, state]));
+const statesBySlug = new Map(usStateResources.map((state) => [state.slug, state]));
+
+export function getUsStateResource(value: string) {
+  const normalized = value.trim();
+  return statesByCode.get(normalized.toUpperCase()) ?? statesBySlug.get(normalized.toLowerCase());
+}
+
+export function searchUsStateResources(query: string) {
+  const normalized = query.trim().toLowerCase();
+
+  if (!normalized) {
+    return usStateResources;
+  }
+
+  return usStateResources.filter((state) =>
+    [state.code, state.name, state.laborAgency.name, state.safety.label]
+      .join(" ")
+      .toLowerCase()
+      .includes(normalized),
+  );
+}
