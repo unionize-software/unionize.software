@@ -17,7 +17,7 @@ jobs:
     name: Quality
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.19.0
@@ -39,7 +39,7 @@ jobs:
     name: MCP integration
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.19.0
@@ -56,7 +56,7 @@ jobs:
     name: Browser tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 10.19.0
@@ -78,7 +78,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: validation-only
       TF_VAR_skip_aws_credentials_validation: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: hashicorp/setup-terraform@v3
       - name: Build Lambda deployment package
         run: bash infra/lambda/intake/build.sh
